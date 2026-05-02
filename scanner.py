@@ -4,6 +4,7 @@ import time
 from colorama import Fore, Style, init
 from logger import log_new_token, log_trending_pair, print_log_summary
 from paper_trader import open_paper_trade, update_positions, print_portfolio
+from alerts import alert_new_token, alert_trending_token, alert_paper_trade_opened, alert_startup
 # Initialize colorama for colored terminal output
 init(autoreset=True)
 
@@ -131,6 +132,7 @@ def scan_tokens():
             print(f"Address : {address}")
             print(f"Link    : {url_link}")
             log_new_token(token)
+            alert_new_token(name, address, url_link)
             print("-" * 60)
 
     except requests.exceptions.RequestException as e:
@@ -216,7 +218,9 @@ def scan_trending():
                     dex_url=dex_url,
                 )
                 if success:
+                 if success:
                     print(Fore.GREEN + f"   [PAPER TRADE OPENED] Bought ${50} of {symbol} at ${price}")
+                    alert_paper_trade_opened(name, symbol, price, 50, risk_score)
                 else:
                     print(Fore.YELLOW + f"   [PAPER TRADE SKIPPED] {result}")
 
@@ -239,6 +243,7 @@ def run_scan():
 
 print(Fore.GREEN + "=" * 60)
 print(Fore.GREEN + "   MEMBOT - Solana Token Scanner STARTED")
+alert_startup()
 print(Fore.GREEN + "=" * 60)
 print(f"   Scanning every {CHECK_INTERVAL_SECONDS} seconds")
 print(f"   Min Liquidity : ${MIN_LIQUIDITY_USD:,}")

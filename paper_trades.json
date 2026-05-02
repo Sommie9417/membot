@@ -1,6 +1,6 @@
 {
-  "balance": 950.0,
-  "total_invested": 50.0,
+  "balance": 850.0,
+  "total_invested": 150.0,
   "open_positions": [
     {
       "name": "Solana",
@@ -16,10 +16,40 @@
       "take_profit_price": 168.38,
       "highest_price_seen": 84.19,
       "status": "open"
+    },
+    {
+      "name": "SOLANA",
+      "symbol": "SOL",
+      "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+      "entry_price": 84.24,
+      "tokens_bought": 0.5935422602089269,
+      "amount_invested_usd": 50.0,
+      "risk_score": 100,
+      "dex_url": "https://dexscreener.com/bsc/0xbffec96e8f3b5058b1817c14e4380758fada01ef",
+      "opened_at": "2026-05-02 22:44:44 UTC",
+      "stop_loss_price": 54.756,
+      "take_profit_price": 168.48,
+      "highest_price_seen": 84.24,
+      "status": "open"
+    },
+    {
+      "name": "Solana",
+      "symbol": "SOL",
+      "address": "sosd5Q3DutGxMEaukBDmkPgsapMQz59jNjGWmhYcdTQ",
+      "entry_price": 143.2,
+      "tokens_bought": 0.3491620111731844,
+      "amount_invested_usd": 50.0,
+      "risk_score": 100,
+      "dex_url": "https://dexscreener.com/solana/3fkduervunskkygtyx1hkijmjvbiytdwybwxyw19n28t",
+      "opened_at": "2026-05-02 22:46:11 UTC",
+      "stop_loss_price": 93.08,
+      "take_profit_price": 286.4,
+      "highest_price_seen": 143.2,
+      "status": "open"
     }
   ],
   "closed_positions": [],
-  "trade_count": 1,
+  "trade_count": 3,
   "wins": 0,
   "losses": 0,
   "total_profit_loss": 0.0
