@@ -1,0 +1,152 @@
+[
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "H3h92BCFeVmjQnYW65GjaNq8bHZY6a2J5WQWhZVYpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/h3h92bcfevmjqnyw65gjanq8bhzy6a2j5wqwhzvypump",
+    "logged_at": "2026-05-02 21:05:07 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "Ewh4LJEmr9imo7n1fihmn4hDXL2yaTzcZfU3pyMKpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/ewh4ljemr9imo7n1fihmn4hdxl2yatzczfu3pymkpump",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Shakespeare founder of Solana",
+    "address": "GejNiJRPK5dTEukkcjFoMDZiEJxquqnZtjNc6k2apump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/gejnijrpk5dteukkcjfomdziejxquqnztjnc6k2apump",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "HAiSq6U4nk89XnJZar9tv6pWmKWUUCLtyC1sH9hmpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/haisq6u4nk89xnjzar9tv6pwmkwuucltyc1sh9hmpump",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "7ECcy8UyWKsuFHn1caJWF7UmXJBo9SET5gsvkoGyjt9i",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/7eccy8uywksufhn1cajwf7umxjbo9set5gsvkogyjt9i",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "My name is Max Long. It's also the only position I take. Compounded liquidity. Locked AMM. Public wallets. Real burns. Max Long. Always - M.L \u725b",
+    "address": "DyhgWtTeAE2UYEfLwpAZ4441eaCWFedRMoxUYM9ypump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/dyhgwtteae2uyeflwpaz4441eacwfedrmoxuym9ypump",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "HE'S MAD.\nHE'S POINTING.\nHE'S THE CHART.\n$FURY is the loudest, reddest, most finger-pointing memecoin on Solana. Built around one principle: anger is a renewable resource. Every dip is fuel. Every doubter is fuel. Every red candle that turns green is a man yelling into a microphone that finally got what he wanted. Point. Yell. Hold.",
+    "address": "3yLxAR1UQub1J1gjodMV9CzrxVgJgksxqMPxJD7NGa3P",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3ylxar1uqub1j1gjodmv9czrxvgjgksxqmpxjd7nga3p",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "7oq47FgaDrppQwCTwQDTmhFajKcjtxe3hJnXJLrWpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/7oq47fgadrppqwctwqdtmhfajkcjtxe3hjnxjlrwpump",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "First AI-powered agent for peptide drug discovery on Solana powered by x402",
+    "address": "G7N65rcgvs1S6dsCbbceSAtoGFyN9W4pxpDGJWqcpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/g7n65rcgvs1s6dscbbcesatogfyn9w4pxpdgjwqcpump",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "The most famous Down syndrome meme on the entire internet.\n100% of fees donated to the Global Down Syndrome Foundation.",
+    "address": "Hx2CNHde124aDvhyviusCAkp9nnEYEwfefghHRqgpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hx2cnhde124advhyviuscakp9nneyewfefghhrqgpump",
+    "logged_at": "2026-05-02 21:05:08 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "Solana",
+    "symbol": "SOL",
+    "address": "0x311935Cd80B76769bF2ecC9D8Ab7635b2139cf82",
+    "price_usd": "84.19",
+    "liquidity_usd": 41817.42,
+    "volume_5m": 1394.26,
+    "volume_24h": 389509.62,
+    "price_change_1h": 0.04,
+    "price_change_24h": 0.85,
+    "risk_score": 95,
+    "dex_url": "https://dexscreener.com/base/0x415c88a05b75d1a65822d899f4a78b4c0d7cbefd",
+    "logged_at": "2026-05-02 21:05:12 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "5fctAP4JyfytHdQoonnS4epKTmWdQwCugUUM8EbRpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/5fctap4jyfythdqoonns4epktmwdqwcuguum8ebrpump",
+    "logged_at": "2026-05-02 21:07:19 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "SOLANA",
+    "symbol": "SOL",
+    "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "price_usd": "84.18",
+    "liquidity_usd": 1232922.12,
+    "volume_5m": 15047.18,
+    "volume_24h": 384266.39,
+    "price_change_1h": -0.02,
+    "price_change_24h": 0.76,
+    "risk_score": 100,
+    "dex_url": "https://dexscreener.com/bsc/0xbffec96e8f3b5058b1817c14e4380758fada01ef",
+    "logged_at": "2026-05-02 21:08:27 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Long or short most pump tokens with leverage, \nwith built-in rug protection on every position. \nHold $PUMPPERPS to unlock fee discounts and earn up \nto 50% of every fee your referrals pay \u2014 forever. \nRequest a payout any time and it hits your wallet \ninstantly. Degenerate at your own risk.",
+    "address": "95Sow4SVvEvPAbxAqe41y7mvqxzNQzg1RkXYMnn6pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/95sow4svvevpabxaqe41y7mvqxznqzg1rkxymnn6pump",
+    "logged_at": "2026-05-02 21:15:46 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "OG",
+    "address": "C86oXELBwYeKiK4GM2wAiRcKmWsmRmFTbaoQJUMjpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/c86oxelbwyekik4gm2wairckmwsmrmftbaoqjumjpump",
+    "logged_at": "2026-05-02 21:15:46 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "SAM MOGMAN",
+    "address": "EvmirLpR7d1bLKFAPmndAimac5jYGwwg5Ee31tc7baiN",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/evmirlpr7d1blkfapmndaimac5jygwwg5ee31tc7bain",
+    "logged_at": "2026-05-02 21:24:27 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Propeller Hat Dog Meme (2022)",
+    "address": "6dBWB9T7VDYGFDBx9HogpKH7UHiMtiYPMmMGZ3HCpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6dbwb9t7vdygfdbx9hogpkh7uhimtiypmmmgz3hcpump",
+    "logged_at": "2026-05-02 21:24:27 UTC"
+  }
+]

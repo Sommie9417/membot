@@ -1,0 +1,26 @@
+{
+  "balance": 950.0,
+  "total_invested": 50.0,
+  "open_positions": [
+    {
+      "name": "Solana",
+      "symbol": "SOL",
+      "address": "0x311935Cd80B76769bF2ecC9D8Ab7635b2139cf82",
+      "entry_price": 84.19,
+      "tokens_bought": 0.5938947618482006,
+      "amount_invested_usd": 50.0,
+      "risk_score": 75,
+      "dex_url": "https://dexscreener.com/base/0xccfa472815563ff9eb2de95c7b2be1ccf91f7f31",
+      "opened_at": "2026-05-02 21:13:41 UTC",
+      "stop_loss_price": 54.7235,
+      "take_profit_price": 168.38,
+      "highest_price_seen": 84.19,
+      "status": "open"
+    }
+  ],
+  "closed_positions": [],
+  "trade_count": 1,
+  "wins": 0,
+  "losses": 0,
+  "total_profit_loss": 0.0
+}
