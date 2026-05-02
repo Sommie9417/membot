@@ -376,5 +376,19 @@ def api_stats():
 # RUN
 # ============================================================
 
+import threading
+from scanner import run_scan
+import schedule
+import time
+
+def run_scheduler():
+    run_scan()
+    schedule.every(60).seconds.do(run_scan)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
 if __name__ == "__main__":
+    scanner_thread = threading.Thread(target=run_scheduler, daemon=True)
+    scanner_thread.start()
     app.run(debug=False, host="0.0.0.0", port=5000)
