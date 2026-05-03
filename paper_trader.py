@@ -50,7 +50,7 @@ def save_trades(data):
         json.dump(data, f, indent=2)
 
 
-def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url):
+def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url, max_position_size=None):
     state = load_trades()
 
     existing = [p for p in state["open_positions"] if p["address"] == address]
@@ -64,7 +64,7 @@ def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url):
         return False, "Invalid entry price"
 
     price = float(entry_price)
-    amount_usd = MAX_POSITION_SIZE
+    amount_usd = max_position_size if max_position_size else MAX_POSITION_SIZE
     tokens_bought = amount_usd / price
 
     position = {

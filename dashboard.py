@@ -57,6 +57,24 @@ HTML = """
             display: flex;
             min-height: 100vh;
         }
+        .strategy-card {
+            background: #0f0f0f;
+            border: 1px solid #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .strategy-card:hover {
+            border-color: #333;
+            background: #1a1a1a;
+        }
+
+        .active-strategy {
+            border-color: #00ff88 !important;
+            background: #00ff8808 !important;
+        }
 
         /* SIDEBAR */
         .sidebar {
@@ -319,6 +337,24 @@ HTML = """
 
         .positive { color: #00ff88; }
         .negative { color: #ff4444; }
+        .strategy-card {
+            background: #0f0f0f;
+            border: 1px solid #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .strategy-card:hover {
+            border-color: #333;
+            background: #1a1a1a;
+        }
+
+        .active-strategy {
+            border-color: #00ff88 !important;
+            background: #00ff8808 !important;
+        }
 
         /* REFRESH BAR */
         .refresh-bar {
@@ -366,6 +402,9 @@ HTML = """
     </div>
     <div class="nav-item" onclick="showPage('tokens', this)">
         <span class="nav-icon">◆</span> Token Log
+    </div>
+    <div class="nav-item" onclick="showPage('settings', this)">
+        <span class="nav-icon">⚙</span> Settings
     </div>
 
     <div class="sidebar-footer">
@@ -648,7 +687,90 @@ HTML = """
             {% endif %}
         </div>
     </div>
+<!-- PAGE: SETTINGS -->
+    <div class="page" id="page-settings">
+        <div class="page-header">
+            <h2>Settings</h2>
+            <p>Control your bot's behaviour</p>
+        </div>
 
+        <!-- STRATEGY MODE -->
+        <div class="section">
+            <h3>Strategy Mode</h3>
+            <p style="color:#666; font-size:12px; margin-bottom:20px;">
+                Current mode: <span style="color:#00ff88; font-weight:bold;">{{ strategy_name|upper }}</span>
+            </p>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+
+                <div class="strategy-card {{ 'active-strategy' if strategy_name == 'conservative' }}"
+                     onclick="setStrategy('conservative')">
+                    <h4 style="color:#4488ff; margin-bottom:8px;">Conservative</h4>
+                    <p style="color:#666; font-size:11px; margin-bottom:12px;">Low risk, strict filters</p>
+                    <div style="font-size:11px; color:#aaa;">
+                        <div>Position size: $25</div>
+                        <div>Min risk score: 70</div>
+                        <div>Min liquidity: $50,000</div>
+                        <div>Stop loss: -20%</div>
+                        <div>Take profit: 1.5x, 3x, 5x</div>
+                    </div>
+                </div>
+
+                <div class="strategy-card {{ 'active-strategy' if strategy_name == 'balanced' }}"
+                     onclick="setStrategy('balanced')">
+                    <h4 style="color:#00ff88; margin-bottom:8px;">Balanced</h4>
+                    <p style="color:#666; font-size:11px; margin-bottom:12px;">Medium risk, standard filters</p>
+                    <div style="font-size:11px; color:#aaa;">
+                        <div>Position size: $50</div>
+                        <div>Min risk score: 55</div>
+                        <div>Min liquidity: $20,000</div>
+                        <div>Stop loss: -35%</div>
+                        <div>Take profit: 2x, 5x, 10x</div>
+                    </div>
+                </div>
+
+                <div class="strategy-card {{ 'active-strategy' if strategy_name == 'aggressive' }}"
+                     onclick="setStrategy('aggressive')">
+                    <h4 style="color:#ff4444; margin-bottom:8px;">Aggressive</h4>
+                    <p style="color:#666; font-size:11px; margin-bottom:12px;">Higher risk, loose filters</p>
+                    <div style="font-size:11px; color:#aaa;">
+                        <div>Position size: $100</div>
+                        <div>Min risk score: 35</div>
+                        <div>Min liquidity: $5,000</div>
+                        <div>Stop loss: -50%</div>
+                        <div>Take profit: 2x, 5x, 10x, 20x</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- KILL SWITCH -->
+        <div class="section">
+            <h3>Kill Switch</h3>
+            <p style="color:#666; font-size:12px; margin-bottom:20px;">
+                Instantly stops all trading activity. Use in emergencies.
+            </p>
+            <div style="display:flex; gap:15px;">
+                <button onclick="setKillSwitch(true)"
+                    style="background:#ff444420; color:#ff4444; border:1px solid #ff4444;
+                           padding:12px 24px; border-radius:6px; cursor:pointer;
+                           font-family: Courier New; font-size:13px; letter-spacing:1px;">
+                    STOP ALL TRADING
+                </button>
+                <button onclick="setKillSwitch(false)"
+                    style="background:#00ff8820; color:#00ff88; border:1px solid #00ff88;
+                           padding:12px 24px; border-radius:6px; cursor:pointer;
+                           font-family: Courier New; font-size:13px; letter-spacing:1px;">
+                    RESUME TRADING
+                </button>
+            </div>
+            <p id="kill-switch-status" style="margin-top:15px; font-size:12px; color:#666;">
+                Status: {{ 'STOPPED' if kill_switch_active else 'RUNNING' }}
+            </p>
+        </div>
+
+    </div>
 </div>
 
 <script>
@@ -728,7 +850,39 @@ HTML = """
     // Load prices immediately then every 30 seconds
     updateLivePrices();
     setInterval(updateLivePrices, 30000);
+// Strategy switcher
+    function setStrategy(strategy) {
+        fetch('/api/set_strategy', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({strategy: strategy})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('Strategy changed to ' + strategy + '. Reloading...');
+                location.reload();
+            }
+        });
+    }
 
+    // Kill switch
+    function setKillSwitch(active) {
+        const action = active ? 'STOP all trading?' : 'RESUME trading?';
+        if (!confirm('Are you sure you want to ' + action)) return;
+
+        fetch('/api/kill_switch', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({active: active})
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('kill-switch-status').textContent = 
+                'Status: ' + (active ? 'STOPPED' : 'RUNNING');
+            alert(active ? 'Trading STOPPED.' : 'Trading RESUMED.');
+        });
+    }
     // Auto refresh page every 60 seconds
     setTimeout(() => location.reload(), 60000);
 </script>
@@ -752,6 +906,10 @@ def index():
     win_rate = (wins / trade_count * 100) if trade_count > 0 else 0.0
     recent_tokens = log[::-1] if log else []
 
+    from config import get_strategy_name, is_kill_switch_active
+    strategy_name = get_strategy_name()
+    kill_switch_active = is_kill_switch_active()
+
     return render_template_string(
         HTML,
         balance=balance,
@@ -765,6 +923,8 @@ def index():
         open_count=len(open_positions),
         token_count=len(log),
         recent_tokens=recent_tokens,
+        strategy_name=strategy_name,
+        kill_switch_active=kill_switch_active,
     )
 
 @app.route("/api/stats")
@@ -802,6 +962,24 @@ def api_prices():
             continue
     
     return jsonify(prices)
+
+
+@app.route("/api/set_strategy", methods=["POST"])
+def set_strategy_route():
+    from config import set_strategy
+    data = request.json
+    strategy = data.get("strategy")
+    success, message = set_strategy(strategy)
+    return jsonify({"success": success, "message": message})
+
+
+@app.route("/api/kill_switch", methods=["POST"])
+def kill_switch_route():
+    from config import set_kill_switch
+    data = request.json
+    active = data.get("active", False)
+    set_kill_switch(active)
+    return jsonify({"success": True, "active": active})
 
 def run_scheduler():
     try:

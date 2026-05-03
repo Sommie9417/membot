@@ -5,6 +5,7 @@ from colorama import Fore, Style, init
 from logger import log_new_token, log_trending_pair, print_log_summary
 from paper_trader import open_paper_trade, update_positions, print_portfolio
 from alerts import alert_trending_token, alert_paper_trade_opened, alert_startup, alert_daily_summary
+from config import get_strategy, get_strategy_name, is_kill_switch_active
 from goplus import check_token_security, format_security_report
 
 # Initialize colorama for colored terminal output
@@ -13,8 +14,6 @@ init(autoreset=True)
 # ============================================================
 # CONFIGURATION
 # ============================================================
-MIN_LIQUIDITY_USD = 5000
-MIN_VOLUME_5M = 500
 CHECK_INTERVAL_SECONDS = 60
 CHAIN = "solana"
 BLACKLIST_SYMBOLS = ["SOL", "USDC", "USDT", "ETH", "BTC", "BNB", "WBTC", "WETH", "WSOL"]
@@ -132,7 +131,22 @@ def scan_tokens():
 # TRENDING SCANNER
 # ============================================================
 def scan_trending():
-    print(Fore.CYAN + "\n[SCANNER] Scanning trending Solana pairs...")
+    # Check kill switch
+    if is_kill_switch_active():
+        print(Fore.RED + "\n[KILL SWITCH ACTIVE] Trading paused.")
+        return
+
+    # Load current strategy
+    strategy = get_strategy()
+    strategy_name = get_strategy_name()
+    MIN_LIQUIDITY_USD = strategy["min_liquidity_usd"]
+    MIN_VOLUME_5M = strategy["min_volume_5m"]
+    MIN_RISK_SCORE = strategy["min_risk_score"]
+    MIN_GOPLUS_SCORE = strategy["min_goplus_score"]
+    MAX_FDV = strategy["max_fdv"]
+    MAX_POSITION_SIZE = strategy["max_position_size"]
+
+    print(Fore.CYAN + f"\n[SCANNER] Scanning trending Solana pairs... [Mode: {strategy_name.upper()}]")
 
     url = "https://api.dexscreener.com/token-boosts/top/v1"
 
@@ -238,7 +252,10 @@ def scan_trending():
                     goplus_flags=security.get("findings", [])
                 )
 
-            if risk_score >= 45 and security["safe"] and price and float(price) > 0:
+           if (risk_score >= MIN_RISK_SCORE and 
+                security["safe"] and 
+                security.get("score", 0) >= MIN_GOPLUS_SCORE and
+                price and float(price) > 0):
                 success, result = open_paper_trade(
                     name=name,
                     symbol=symbol,
@@ -246,6 +263,7 @@ def scan_trending():
                     entry_price=price,
                     risk_score=risk_score,
                     dex_url=dex_url,
+                    max_position_size=MAX_POSITION_SIZE,
                 )
                 if success:
                     print(Fore.GREEN + f"   [PAPER TRADE OPENED] Bought $50 of {symbol} at ${price}")
