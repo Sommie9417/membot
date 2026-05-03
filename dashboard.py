@@ -377,21 +377,24 @@ def api_stats():
 # ============================================================
 
 import threading
-from scanner import run_scan
 import schedule
 import time
+import os
 
 def run_scheduler():
-    run_scan()
-    schedule.every(60).seconds.do(run_scan)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-import os
+    try:
+        from scanner import run_scan
+        run_scan()
+        schedule.every(60).seconds.do(run_scan)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+    except Exception as e:
+        print(f"Scanner error: {e}")
 
 if __name__ == "__main__":
     scanner_thread = threading.Thread(target=run_scheduler, daemon=True)
     scanner_thread.start()
     port = int(os.environ.get("PORT", 5000))
+    print(f"Starting dashboard on port {port}")
     app.run(debug=False, host="0.0.0.0", port=port)
