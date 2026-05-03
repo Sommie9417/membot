@@ -230,8 +230,13 @@ def scan_trending():
             print(f"Link        : {dex_url}")
             log_trending_pair(pair, risk_score)
 
-            if risk_score >= 70:
-                alert_trending_token(name, symbol, price, liquidity, vol_5m, price_1h, risk_score, dex_url)
+            if risk_score >= 70 and security["safe"]:
+                alert_trending_token(
+                    name, symbol, price, liquidity, vol_5m, price_1h,
+                    risk_score, dex_url,
+                    goplus_score=security.get("score"),
+                    goplus_flags=security.get("findings", [])
+                )
 
             if risk_score >= 45 and security["safe"] and price and float(price) > 0:
                 success, result = open_paper_trade(
@@ -244,7 +249,8 @@ def scan_trending():
                 )
                 if success:
                     print(Fore.GREEN + f"   [PAPER TRADE OPENED] Bought $50 of {symbol} at ${price}")
-                    alert_paper_trade_opened(name, symbol, price, 50, risk_score)
+                    alert_paper_trade_opened(name, symbol, price, 50, risk_score, 
+                                           goplus_score=security.get("score"))
                 else:
                     print(Fore.YELLOW + f"   [PAPER TRADE SKIPPED] {result}")
 
