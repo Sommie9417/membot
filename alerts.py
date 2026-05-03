@@ -125,8 +125,10 @@ def alert_startup():
         f"- No SOL/BTC/ETH/stablecoins"
     )
     return send_telegram(message)
-    def alert_daily_summary(balance, pnl, trade_count, wins, losses, 
-                         win_rate, open_count, best_position=None):
+
+
+def alert_daily_summary(balance, pnl, trade_count, wins, losses,
+                        win_rate, open_count, best_position=None):
     """Send a daily morning summary to Telegram."""
     
     sign = "+" if pnl >= 0 else ""

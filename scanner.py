@@ -1,35 +1,26 @@
 import requests
 import schedule
 import time
-from colorama import Fore, Style, init
+from colorama import Fore, init
 from logger import log_new_token, log_trending_pair, print_log_summary
 from paper_trader import open_paper_trade, update_positions, print_portfolio
 from alerts import alert_trending_token, alert_paper_trade_opened, alert_startup, alert_daily_summary
-from config import get_strategy, get_strategy_name, is_kill_switch_active
 from goplus import check_token_security, format_security_report
+from config import get_strategy, get_strategy_name, is_kill_switch_active
 
-# Initialize colorama for colored terminal output
 init(autoreset=True)
 
-# ============================================================
-# CONFIGURATION
-# ============================================================
 CHECK_INTERVAL_SECONDS = 60
 CHAIN = "solana"
 BLACKLIST_SYMBOLS = ["SOL", "USDC", "USDT", "ETH", "BTC", "BNB", "WBTC", "WETH", "WSOL"]
 
-# ============================================================
-# RISK SCORER
-# ============================================================
+
 def calculate_risk_score(token):
     score = 100
-
     try:
         liquidity = token.get("liquidity", {}).get("usd", 0) or 0
-        volume_h1 = token.get("volume", {}).get("h1", 0) or 0
         volume_h24 = token.get("volume", {}).get("h24", 0) or 0
         price_change_h1 = token.get("priceChange", {}).get("h1", 0) or 0
-        price_change_h24 = token.get("priceChange", {}).get("h24", 0) or 0
         txns = token.get("txns", {})
         buys_h1 = txns.get("h1", {}).get("buys", 0) or 0
         sells_h1 = txns.get("h1", {}).get("sells", 0) or 0
@@ -72,9 +63,6 @@ def calculate_risk_score(token):
     return max(0, min(100, score))
 
 
-# ============================================================
-# RISK LABEL
-# ============================================================
 def get_risk_label(score):
     if score >= 70:
         return Fore.GREEN + f"LOW RISK ({score}/100)"
@@ -84,12 +72,8 @@ def get_risk_label(score):
         return Fore.RED + f"HIGH RISK ({score}/100)"
 
 
-# ============================================================
-# TOKEN SCANNER
-# ============================================================
 def scan_tokens():
     print(Fore.CYAN + "\n[SCANNER] Scanning for new Solana tokens...")
-
     url = "https://api.dexscreener.com/token-profiles/latest/v1"
 
     try:
@@ -115,9 +99,24 @@ def scan_tokens():
             address = token.get("tokenAddress", "N/A")
             url_link = token.get("url", "N/A")
 
-            print(Fore.WHITE + f"Token   : {name}")
-            print(f"Address : {address}")
-            print(f"Link    : {url_link}")
+            security = check_token_security(address)
+            score = security.get("score", 0)
+            findings = security.get("findings", [])
+
+            if score >= 70:
+                score_color = Fore.GREEN
+            elif score >= 45:
+                score_color = Fore.YELLOW
+            else:
+                score_color = Fore.RED
+
+            print(Fore.WHITE + f"Token    : {name}")
+            print(f"Address  : {address}")
+            print(f"Link     : {url_link}")
+            print(score_color + f"GoPlus   : {score}/100 - {'SAFE' if security['safe'] else 'RISKY'}")
+            if findings:
+                for flag in findings[:3]:
+                    print(Fore.RED + f"  Flag   : {flag}")
             log_new_token(token)
             print("-" * 60)
 
@@ -127,16 +126,11 @@ def scan_tokens():
         print(Fore.RED + f"Unexpected error: {e}")
 
 
-# ============================================================
-# TRENDING SCANNER
-# ============================================================
 def scan_trending():
-    # Check kill switch
     if is_kill_switch_active():
         print(Fore.RED + "\n[KILL SWITCH ACTIVE] Trading paused.")
         return
 
-    # Load current strategy
     strategy = get_strategy()
     strategy_name = get_strategy_name()
     MIN_LIQUIDITY_USD = strategy["min_liquidity_usd"]
@@ -172,35 +166,26 @@ def scan_trending():
             token_address = token.get("tokenAddress", "")
             if not token_address:
                 continue
-
             try:
                 pair_url = f"https://api.dexscreener.com/latest/dex/tokens/{token_address}"
                 pair_response = requests.get(pair_url, timeout=10)
                 pair_data = pair_response.json()
                 pairs = pair_data.get("pairs", [])
-
                 if not pairs:
                     continue
-
                 pair = max(pairs, key=lambda x: x.get("liquidity", {}).get("usd", 0) or 0)
-
                 liquidity = pair.get("liquidity", {}).get("usd", 0) or 0
                 volume_5m = pair.get("volume", {}).get("m5", 0) or 0
                 fdv = pair.get("fdv", 0) or 0
                 symbol = pair.get("baseToken", {}).get("symbol", "").upper()
-
                 if symbol in BLACKLIST_SYMBOLS:
                     continue
-
-                if fdv > 10_000_000:
+                if fdv > MAX_FDV:
                     continue
-
                 if liquidity > 500_000:
                     continue
-
                 if liquidity >= MIN_LIQUIDITY_USD and volume_5m >= MIN_VOLUME_5M:
                     filtered.append(pair)
-
             except Exception:
                 continue
 
@@ -227,7 +212,6 @@ def scan_trending():
             risk_score = calculate_risk_score(pair)
             risk_label = get_risk_label(risk_score)
 
-            # Run GoPlus security check
             token_address = pair.get("baseToken", {}).get("address", "")
             security = check_token_security(token_address)
             security_report = format_security_report(security)
@@ -252,10 +236,9 @@ def scan_trending():
                     goplus_flags=security.get("findings", [])
                 )
 
-           if (risk_score >= MIN_RISK_SCORE and 
-                security["safe"] and 
-                security.get("score", 0) >= MIN_GOPLUS_SCORE and
-                price and float(price) > 0):
+            if (risk_score >= MIN_RISK_SCORE and security["safe"] and
+                    security.get("score", 0) >= MIN_GOPLUS_SCORE and
+                    price and float(price) > 0):
                 success, result = open_paper_trade(
                     name=name,
                     symbol=symbol,
@@ -266,9 +249,9 @@ def scan_trending():
                     max_position_size=MAX_POSITION_SIZE,
                 )
                 if success:
-                    print(Fore.GREEN + f"   [PAPER TRADE OPENED] Bought $50 of {symbol} at ${price}")
-                    alert_paper_trade_opened(name, symbol, price, 50, risk_score, 
-                                           goplus_score=security.get("score"))
+                    print(Fore.GREEN + f"   [PAPER TRADE OPENED] Bought ${MAX_POSITION_SIZE} of {symbol} at ${price}")
+                    alert_paper_trade_opened(name, symbol, price, MAX_POSITION_SIZE, risk_score,
+                                             goplus_score=security.get("score"))
                 else:
                     print(Fore.YELLOW + f"   [PAPER TRADE SKIPPED] {result}")
 
@@ -280,12 +263,8 @@ def scan_trending():
         print(Fore.RED + f"Unexpected error: {e}")
 
 
-# ============================================================
-# MAIN
-# ============================================================
 def check_open_positions():
-    """Fetch current prices for all open positions and close if TP/SL hit."""
-    from paper_trader import load_trades, update_positions
+    from paper_trader import load_trades
     from alerts import alert_paper_trade_closed
 
     state = load_trades()
@@ -316,7 +295,6 @@ def check_open_positions():
                 print(Fore.YELLOW + f"   No price data for {name}")
                 continue
 
-            # Get most liquid pair
             pair = max(pairs, key=lambda x: x.get("liquidity", {}).get("usd", 0) or 0)
             price = pair.get("priceUsd")
 
@@ -334,7 +312,6 @@ def check_open_positions():
         except Exception as e:
             print(Fore.RED + f"   Error fetching price for {name}: {e}")
 
-    # Update positions and close any that hit TP or SL
     closed, partial_exits = update_positions(current_prices)
 
     for position in closed:
@@ -373,8 +350,6 @@ print(Fore.GREEN + "=" * 60)
 print(Fore.GREEN + "   MEMBOT - Solana Token Scanner STARTED")
 print(Fore.GREEN + "=" * 60)
 print(f"   Scanning every {CHECK_INTERVAL_SECONDS} seconds")
-print(f"   Min Liquidity : ${MIN_LIQUIDITY_USD:,}")
-print(f"   Min 5m Volume : ${MIN_VOLUME_5M:,}")
 print(Fore.GREEN + "=" * 60)
 
 alert_startup()
@@ -383,10 +358,10 @@ run_scan()
 
 schedule.every(CHECK_INTERVAL_SECONDS).seconds.do(run_scan)
 
+
 def send_daily_summary():
     from paper_trader import load_trades
-    import requests
-    
+
     state = load_trades()
     balance = state.get("balance", 1000.0)
     pnl = state.get("total_profit_loss", 0.0)
@@ -396,7 +371,6 @@ def send_daily_summary():
     win_rate = (wins / trade_count * 100) if trade_count > 0 else 0.0
     open_positions = state.get("open_positions", [])
 
-    # Find best performing open position
     best_position = None
     best_change = None
     for pos in open_positions:
@@ -436,7 +410,7 @@ def send_daily_summary():
         best_position=best_position
     )
 
-# Schedule daily summary at 8am
+
 schedule.every().day.at("08:00").do(send_daily_summary)
 
 while True:

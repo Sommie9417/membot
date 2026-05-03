@@ -839,5 +839,100 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/gxx3qskhv3upzb1uoj1vrp1bibeepjstlpcrrhucbonk",
     "logged_at": "2026-05-03 18:12:30 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "3VFk6dY4Z3UCC9ARrXgGCTPfSYn5tQTsmiQEQvG5pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3vfk6dy4z3ucc9arrxggctpfsyn5tqtsmiqeqvg5pump",
+    "logged_at": "2026-05-03 19:20:48 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Petawatts Coin",
+    "address": "3k3fwhfu8DodUas4WAmGxaw3zX6efpF9VEyv7CV4pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3k3fwhfu8doduas4wamgxaw3zx6efpf9veyv7cv4pump",
+    "logged_at": "2026-05-03 19:20:50 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "3EbRJCJoy9gg9TawoGh8rc5eSW7m8FDPWMTbfKudpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3ebrjcjoy9gg9tawogh8rc5esw7m8fdpwmtbfkudpump",
+    "logged_at": "2026-05-03 19:20:53 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "GPk55rhRpidFyNsuY6aKi5JbdMAVEd6WfBkbHMyipump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/gpk55rhrpidfynsuy6aki5jbdmaved6wfbkbhmyipump",
+    "logged_at": "2026-05-03 19:20:57 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Hold $PS, receive tokenized pharma equities.\nEvery 30 min, creator fees convert into equities and are distributed to holders.",
+    "address": "8dyQpSSPwMiQujAmvryPXB9r4Q2DvaUSTC5gk5capump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/8dyqpsspwmiqujamvrypxb9r4q2dvaustc5gk5capump",
+    "logged_at": "2026-05-03 19:21:01 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Elon gave us a generational play",
+    "address": "5sX4EC4nYZeBZSPZdSd3XZPr6ntYNKUswD3Yyo7zpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/5sx4ec4nyzebzspzdsd3xzpr6ntynkuswd3yyo7zpump",
+    "logged_at": "2026-05-03 19:21:05 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "d",
+    "address": "3rPunVgULHzxcC4apAjvJr7X54iTSLM22vrjdW6Fpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3rpunvgulhzxcc4apajvjr7x54itslm22vrjdw6fpump",
+    "logged_at": "2026-05-03 19:21:07 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "A verifiable instrument for biomedical signal",
+    "address": "E2mphwn17yszY9BjPaqPfZ5qmAgo1oWALTCu8me5pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/e2mphwn17yszy9bjpaqpfz5qmago1owaltcu8me5pump",
+    "logged_at": "2026-05-03 19:21:09 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "$M the next $GME",
+    "address": "HbbsSguB81ihrosBhu5YEDtYrK3tMSfZ1794LiPGpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hbbssgub81ihrosbhu5yedtyrk3tmsfz1794lipgpump",
+    "logged_at": "2026-05-03 19:21:10 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "5YhzMyQ8eSX5EoKnbw41ngaNYJpBCQQSbL6BE9bcpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/5yhzmyq8esx5eoknbw41nganyjpbcqqsbl6be9bcpump",
+    "logged_at": "2026-05-03 19:21:15 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "assface",
+    "symbol": "assface",
+    "address": "BnXWvsVZYgBxTUDyDqHZjvFbQGvEZeipY4ZdmqCbpump",
+    "price_usd": "0.0003019",
+    "liquidity_usd": 64211.55,
+    "volume_5m": 5105.48,
+    "volume_24h": 157624.68,
+    "price_change_1h": 11.31,
+    "price_change_24h": 33.35,
+    "risk_score": 100,
+    "dex_url": "https://dexscreener.com/solana/dlwqn3x3wpeqippmnxb8rx3g6jqguecmzjqbpbd7w8yt",
+    "logged_at": "2026-05-03 19:22:07 UTC"
   }
 ]

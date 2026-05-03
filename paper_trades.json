@@ -1,6 +1,6 @@
 {
-  "balance": 850.0,
-  "total_invested": 150.0,
+  "balance": 825.0,
+  "total_invested": 175.0,
   "open_positions": [
     {
       "name": "butting",
@@ -61,10 +61,30 @@
       "profit_levels_hit": [],
       "partial_exits": [],
       "status": "open"
+    },
+    {
+      "name": "I AM OUT",
+      "symbol": "IMOUT",
+      "address": "DACYVx34V5aQaehN3MZGYxPfoyQYHZSnFAFw3T2Vbonk",
+      "entry_price": 0.001995,
+      "tokens_bought": 12531.328320802006,
+      "tokens_remaining": 12531.328320802006,
+      "amount_invested_usd": 25.0,
+      "amount_remaining_usd": 25.0,
+      "realized_profit": 0.0,
+      "risk_score": 100,
+      "dex_url": "https://dexscreener.com/solana/2i1ctvedhpvvyrdyzt26vsavd17h6ctqs9eq9xoyxfmr",
+      "opened_at": "2026-05-03 19:22:04 UTC",
+      "stop_loss_price": 0.00129675,
+      "highest_price_seen": 0.001995,
+      "trailing_stop_price": 0.00129675,
+      "profit_levels_hit": [],
+      "partial_exits": [],
+      "status": "open"
     }
   ],
   "closed_positions": [],
-  "trade_count": 3,
+  "trade_count": 4,
   "wins": 0,
   "losses": 0,
   "total_profit_loss": 0.0
