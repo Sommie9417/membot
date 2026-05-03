@@ -934,5 +934,44 @@
     "risk_score": 100,
     "dex_url": "https://dexscreener.com/solana/dlwqn3x3wpeqippmnxb8rx3g6jqguecmzjqbpbd7w8yt",
     "logged_at": "2026-05-03 19:22:07 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "6pHHybYMu3UGKviJ5geWXwZ9jYr2rM63rVGUkXcGpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6phhybymu3ugkvij5gewxwz9jyr2rm63rvgukxcgpump",
+    "logged_at": "2026-05-03 19:42:11 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "The OG rage bait meme",
+    "address": "8JiAZcqDvmTT88eWmre5DWKxqewUovZ56rF43oNZpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/8jiazcqdvmtt88ewmre5dwkxqewuovz56rf43onzpump",
+    "logged_at": "2026-05-03 19:42:13 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "3rPUQTmPPaBV6bLMvfqxuoVtjZu1trWBPmazE5Zxpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3rpuqtmppabv6blmvfqxuovtjzu1trwbpmaze5zxpump",
+    "logged_at": "2026-05-03 19:42:17 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "Purple Bitcoin",
+    "symbol": "PBTC",
+    "address": "HfMbPyDdZH6QMaDDUokjYCkHxzjoGBMpgaUvpLWGbF5p",
+    "price_usd": "0.1917",
+    "liquidity_usd": 239211.39,
+    "volume_5m": 3085.65,
+    "volume_24h": 48932.81,
+    "price_change_1h": 2.75,
+    "price_change_24h": 5.42,
+    "risk_score": 100,
+    "dex_url": "https://dexscreener.com/solana/ath32pblrupjq8ynuhqwajbgbbgprbrw2gzw5jdzxirr",
+    "logged_at": "2026-05-03 19:44:09 UTC"
   }
 ]

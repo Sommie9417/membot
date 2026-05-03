@@ -12,7 +12,6 @@ def load_trades():
         with open("paper_trades.json", "r") as f:
             try:
                 data = json.load(f)
-                # Fix old positions missing new fields
                 for pos in data.get("open_positions", []):
                     if "take_profit_price" not in pos:
                         pos["take_profit_price"] = pos.get("entry_price", 0) * 2.0
@@ -42,197 +41,127 @@ def load_log():
 
 HTML = """
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEMBOT</title>
     <style>
+        :root[data-theme="dark"] {
+            --bg: #0a0a0a;
+            --bg2: #111111;
+            --bg3: #1a1a1a;
+            --border: #1e1e1e;
+            --text: #e0e0e0;
+            --text2: #aaaaaa;
+            --text3: #555555;
+            --green: #00ff88;
+            --red: #ff4444;
+            --yellow: #ffaa00;
+            --blue: #4488ff;
+            --nav-bg: #0f0f0f;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f4f4f4;
+            --bg2: #ffffff;
+            --bg3: #eeeeee;
+            --border: #dddddd;
+            --text: #111111;
+            --text2: #444444;
+            --text3: #999999;
+            --green: #00aa55;
+            --red: #dd2222;
+            --yellow: #cc8800;
+            --blue: #2255cc;
+            --nav-bg: #ffffff;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #0a0a0a;
-            color: #e0e0e0;
+            background: var(--bg);
+            color: var(--text);
             font-family: 'Courier New', monospace;
-            display: flex;
             min-height: 100vh;
-        }
-        .strategy-card {
-            background: #0f0f0f;
-            border: 1px solid #1e1e1e;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
+            padding-bottom: 80px;
+            transition: background 0.3s, color 0.3s;
         }
 
-        .strategy-card:hover {
-            border-color: #333;
-            background: #1a1a1a;
-        }
-
-        .active-strategy {
-            border-color: #00ff88 !important;
-            background: #00ff8808 !important;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 220px;
-            background: #0f0f0f;
-            border-right: 1px solid #1e1e1e;
-            padding: 24px 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-220px);
-        }
-
-        /* HAMBURGER BUTTON */
-        .hamburger {
-            display: none;
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 200;
-            background: #111;
-            border: 1px solid #1e1e1e;
-            color: #00ff88;
-            font-size: 20px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        /* OVERLAY */
-        .overlay {
-            display: none;
-            position: fixed;
+        /* TOP BAR */
+        .topbar {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 99;
+            z-index: 100;
         }
 
-        .overlay.active {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-
-            .sidebar {
-                transform: translateX(-220px);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 20px;
-                padding-top: 60px;
-            }
-        }
-
-        .sidebar-logo {
-            padding: 0 20px 24px;
-            border-bottom: 1px solid #1e1e1e;
-            margin-bottom: 16px;
-        }
-
-        .sidebar-logo h1 {
-            color: #00ff88;
+        .topbar h1 {
+            color: var(--green);
             font-size: 22px;
             letter-spacing: 3px;
         }
 
-        .sidebar-logo p {
-            color: #444;
-            font-size: 10px;
-            margin-top: 4px;
-            letter-spacing: 1px;
-        }
-
-        .nav-item {
+        .topbar-right {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
-            cursor: pointer;
-            color: #666;
-            font-size: 13px;
-            letter-spacing: 1px;
-            border-left: 3px solid transparent;
-            transition: all 0.2s;
-            text-transform: uppercase;
+            gap: 12px;
         }
 
-        .nav-item:hover {
-            color: #e0e0e0;
-            background: #1a1a1a;
-        }
-
-        .nav-item.active {
-            color: #00ff88;
-            border-left: 3px solid #00ff88;
-            background: #00ff8810;
-        }
-
-        .nav-icon {
-            margin-right: 10px;
-            font-size: 15px;
-        }
-
-        .sidebar-footer {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            padding: 0 20px;
-            color: #333;
+        .topbar-sub {
+            color: var(--text3);
             font-size: 10px;
-            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* THEME TOGGLE */
+        .theme-toggle {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--green);
+            color: var(--green);
         }
 
         /* MAIN CONTENT */
         .main {
-            margin-left: 220px;
-            flex: 1;
-            padding: 30px;
-            min-height: 100vh;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
+        /* PAGES */
+        .page { display: none; }
+        .page.active { display: block; }
 
         .page-header {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .page-header h2 {
-            color: #00ff88;
-            font-size: 20px;
+            color: var(--green);
+            font-size: 18px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         .page-header p {
-            color: #444;
+            color: var(--text3);
             font-size: 12px;
             margin-top: 4px;
         }
@@ -240,20 +169,21 @@ HTML = """
         /* CARDS */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .card {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 8px;
-            padding: 20px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: var(--card-shadow);
         }
 
         .card h3 {
-            color: #444;
+            color: var(--text3);
             font-size: 10px;
             letter-spacing: 1px;
             margin-bottom: 8px;
@@ -261,57 +191,63 @@ HTML = """
         }
 
         .card .value {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            color: #00ff88;
+            color: var(--green);
         }
 
-        .card .value.red { color: #ff4444; }
-        .card .value.yellow { color: #ffaa00; }
-        .card .value.white { color: #ffffff; }
+        .card .value.red { color: var(--red); }
+        .card .value.yellow { color: var(--yellow); }
+        .card .value.white { color: var(--text); }
 
-        /* TABLES */
+        /* SECTIONS */
         .section {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 8px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
         }
 
         .section h3 {
-            color: #00ff88;
+            color: var(--green);
             font-size: 12px;
             letter-spacing: 1px;
             margin-bottom: 16px;
             text-transform: uppercase;
-            border-bottom: 1px solid #1e1e1e;
+            border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
         }
 
+        /* TABLES */
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
+            overflow-x: auto;
+            display: block;
         }
 
         th {
-            color: #444;
+            color: var(--text3);
             text-align: left;
             padding: 8px;
             font-size: 10px;
             letter-spacing: 1px;
             text-transform: uppercase;
-            border-bottom: 1px solid #1e1e1e;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
         }
 
         td {
             padding: 10px 8px;
-            border-bottom: 1px solid #141414;
-            color: #aaa;
+            border-bottom: 1px solid var(--bg3);
+            color: var(--text2);
+            white-space: nowrap;
         }
 
-        tr:hover td { background: #161616; }
+        tr:hover td { background: var(--bg3); }
 
         /* BADGES */
         .badge {
@@ -323,92 +259,154 @@ HTML = """
             letter-spacing: 1px;
         }
 
-        .badge.green { background: #00ff8815; color: #00ff88; }
-        .badge.yellow { background: #ffaa0015; color: #ffaa00; }
-        .badge.red { background: #ff444415; color: #ff4444; }
-        .badge.blue { background: #4488ff15; color: #4488ff; }
+        .badge.green { background: #00ff8815; color: var(--green); }
+        .badge.yellow { background: #ffaa0015; color: var(--yellow); }
+        .badge.red { background: #ff444415; color: var(--red); }
+        .badge.blue { background: #4488ff15; color: var(--blue); }
 
+        .positive { color: var(--green); }
+        .negative { color: var(--red); }
         .no-data {
-            color: #333;
+            color: var(--text3);
             text-align: center;
             padding: 30px;
             font-size: 12px;
         }
 
-        .positive { color: #00ff88; }
-        .negative { color: #ff4444; }
-        .strategy-card {
-            background: #0f0f0f;
-            border: 1px solid #1e1e1e;
+        a { color: var(--green); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* REFRESH BAR */
+        .refresh-bar {
+            background: var(--bg2);
+            border: 1px solid var(--border);
             border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text3);
+        }
+
+        .refresh-bar span { color: var(--green); }
+
+        /* STRATEGY CARDS */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .strategy-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
             padding: 20px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .strategy-card:hover {
-            border-color: #333;
-            background: #1a1a1a;
-        }
+        .strategy-card:hover { border-color: var(--text3); }
 
         .active-strategy {
-            border-color: #00ff88 !important;
+            border-color: var(--green) !important;
             background: #00ff8808 !important;
         }
 
-        /* REFRESH BAR */
-        .refresh-bar {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 8px;
-            padding: 10px 16px;
-            margin-bottom: 20px;
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            border-top: 1px solid var(--border);
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
-            font-size: 11px;
-            color: #444;
+            padding: 10px 0 14px;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
         }
 
-        .refresh-bar span { color: #00ff88; }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: var(--text3);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            min-width: 60px;
+        }
 
-        a { color: #00ff88; text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        .nav-item:hover { color: var(--text); }
+
+        .nav-item.active {
+            color: var(--green);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .nav-label {
+            font-size: 9px;
+            letter-spacing: 0.5px;
+        }
+
+        /* KILL SWITCH BUTTONS */
+        .btn-danger {
+            background: #ff444420;
+            color: var(--red);
+            border: 1px solid var(--red);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .btn-danger:hover { background: #ff444430; }
+
+        .btn-success {
+            background: #00ff8820;
+            color: var(--green);
+            border: 1px solid var(--green);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .btn-success:hover { background: #00ff8830; }
     </style>
 </head>
 <body>
 
-<!-- HAMBURGER BUTTON (mobile only) -->
-<button class="hamburger" onclick="toggleSidebar()">☰</button>
-
-<!-- OVERLAY (mobile only) -->
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
+<!-- TOP BAR -->
+<div class="topbar">
+    <div>
         <h1>MEMBOT</h1>
-        <p>SOLANA TRADING BOT</p>
+        <div class="topbar-sub">SOLANA TRADING BOT</div>
     </div>
-
-    <div class="nav-item active" onclick="showPage('overview', this)">
-        <span class="nav-icon">▣</span> Overview
-    </div>
-    <div class="nav-item" onclick="showPage('positions', this)">
-        <span class="nav-icon">◎</span> Open Positions
-    </div>
-    <div class="nav-item" onclick="showPage('history', this)">
-        <span class="nav-icon">◈</span> Trade History
-    </div>
-    <div class="nav-item" onclick="showPage('tokens', this)">
-        <span class="nav-icon">◆</span> Token Log
-    </div>
-    <div class="nav-item" onclick="showPage('settings', this)">
-        <span class="nav-icon">⚙</span> Settings
-    </div>
-
-    <div class="sidebar-footer">
-        Auto-refreshes every 60s
+    <div class="topbar-right">
+        <div style="color: var(--text3); font-size:11px;" id="timestamp"></div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙</button>
     </div>
 </div>
 
@@ -417,8 +415,8 @@ HTML = """
 
     <!-- REFRESH BAR -->
     <div class="refresh-bar">
-        <div>Last updated: <span id="timestamp">Loading...</span></div>
-        <div>Scanning every <span>60 seconds</span></div>
+        <div>Strategy: <span>{{ strategy_name|upper }}</span></div>
+        <div>Auto-refreshes every <span>60s</span></div>
     </div>
 
     <!-- PAGE: OVERVIEW -->
@@ -430,7 +428,7 @@ HTML = """
 
         <div class="grid">
             <div class="card">
-                <h3>Current Balance</h3>
+                <h3>Balance</h3>
                 <div class="value {{ 'green' if balance >= 1000 else 'red' }}">
                     ${{ "%.2f"|format(balance) }}
                 </div>
@@ -448,7 +446,7 @@ HTML = """
                 </div>
             </div>
             <div class="card">
-                <h3>Total Trades</h3>
+                <h3>Trades</h3>
                 <div class="value white">{{ trade_count }}</div>
             </div>
             <div class="card">
@@ -460,16 +458,15 @@ HTML = """
                 <div class="value red">{{ losses }}</div>
             </div>
             <div class="card">
-                <h3>Open Positions</h3>
+                <h3>Open</h3>
                 <div class="value yellow">{{ open_count }}</div>
             </div>
             <div class="card">
-                <h3>Tokens Logged</h3>
+                <h3>Logged</h3>
                 <div class="value white">{{ token_count }}</div>
             </div>
         </div>
 
-        <!-- Recent Activity -->
         <div class="section">
             <h3>Recent Activity</h3>
             {% if recent_tokens %}
@@ -483,7 +480,7 @@ HTML = """
                 </tr>
                 {% for token in recent_tokens[:8] %}
                 <tr>
-                    <td><strong>{{ token.name[:35] if token.name else 'Unknown' }}</strong></td>
+                    <td><strong>{{ token.name[:30] if token.name else 'Unknown' }}</strong></td>
                     <td><span class="badge blue">{{ token.type }}</span></td>
                     <td>
                         {% if token.risk_score and token.risk_score != 'N/A' %}
@@ -515,43 +512,42 @@ HTML = """
             <h2>Open Positions</h2>
             <p>Currently active paper trades</p>
         </div>
-
         <div class="section">
             <h3>Active Trades ({{ open_count }})</h3>
             {% if open_positions %}
             <table>
                 <tr>
                     <th>Token</th>
-                    <th>Entry Price</th>
-                    <th>Current Price</th>
+                    <th>Entry</th>
+                    <th>Current</th>
                     <th>Change</th>
-                    <th>Current Value</th>
+                    <th>Value</th>
                     <th>Invested</th>
                     <th>Stop Loss</th>
                     <th>Take Profit</th>
-                    <th>Risk Score</th>
+                    <th>Risk</th>
                     <th>Opened</th>
                     <th>Link</th>
                 </tr>
                 {% for pos in open_positions %}
                 <tr>
                     <td><strong>{{ pos.name }}</strong><br>
-                        <span style="color:#444">{{ pos.symbol }}</span>
+                        <span style="color:var(--text3)">{{ pos.symbol }}</span>
                     </td>
                     <td>${{ "%.8f"|format(pos.entry_price) }}</td>
-                    <td id="price-{{ pos.address }}" style="color:#444">Loading...</td>
-                    <td id="change-{{ pos.address }}" style="color:#444">...</td>
-                    <td id="value-{{ pos.address }}" style="color:#444">...</td>
+                    <td id="price-{{ pos.address }}" style="color:var(--text3)">Loading...</td>
+                    <td id="change-{{ pos.address }}" style="color:var(--text3)">...</td>
+                    <td id="value-{{ pos.address }}" style="color:var(--text3)">...</td>
                     <td>${{ "%.2f"|format(pos.amount_invested_usd) }}</td>
                     <td class="negative">${{ "%.8f"|format(pos.stop_loss_price) }}</td>
                     <td class="positive">${{ "%.8f"|format(pos.take_profit_price) }}</td>
                     <td>
                         {% if pos.risk_score >= 70 %}
-                            <span class="badge green">{{ pos.risk_score }}/100</span>
+                            <span class="badge green">{{ pos.risk_score }}</span>
                         {% elif pos.risk_score >= 45 %}
-                            <span class="badge yellow">{{ pos.risk_score }}/100</span>
+                            <span class="badge yellow">{{ pos.risk_score }}</span>
                         {% else %}
-                            <span class="badge red">{{ pos.risk_score }}/100</span>
+                            <span class="badge red">{{ pos.risk_score }}</span>
                         {% endif %}
                     </td>
                     <td>{{ pos.opened_at }}</td>
@@ -560,7 +556,7 @@ HTML = """
                 {% endfor %}
             </table>
             {% else %}
-            <div class="no-data">No open positions. Bot will open trades automatically when it finds good tokens.</div>
+            <div class="no-data">No open positions yet.</div>
             {% endif %}
         </div>
     </div>
@@ -569,9 +565,8 @@ HTML = """
     <div class="page" id="page-history">
         <div class="page-header">
             <h2>Trade History</h2>
-            <p>All closed trades and their results</p>
+            <p>All closed trades and results</p>
         </div>
-
         <div class="grid">
             <div class="card">
                 <h3>Total Closed</h3>
@@ -592,30 +587,31 @@ HTML = """
                 </div>
             </div>
         </div>
-
         <div class="section">
             <h3>Closed Trades</h3>
             {% if closed_positions %}
             <table>
                 <tr>
                     <th>Token</th>
-                    <th>Exit Reason</th>
-                    <th>Entry Price</th>
+                    <th>Exit</th>
+                    <th>Entry</th>
                     <th>Exit Price</th>
-                    <th>P/L (USD)</th>
-                    <th>P/L (%)</th>
+                    <th>P/L USD</th>
+                    <th>P/L %</th>
                     <th>Closed</th>
                 </tr>
                 {% for pos in closed_positions|reverse %}
                 <tr>
                     <td><strong>{{ pos.name }}</strong><br>
-                        <span style="color:#444">{{ pos.symbol }}</span>
+                        <span style="color:var(--text3)">{{ pos.symbol }}</span>
                     </td>
                     <td>
                         {% if pos.exit_reason == 'TAKE PROFIT' %}
-                            <span class="badge green">TAKE PROFIT</span>
+                            <span class="badge green">TP</span>
+                        {% elif pos.exit_reason == 'FULLY EXITED' %}
+                            <span class="badge blue">FULL</span>
                         {% else %}
-                            <span class="badge red">STOP LOSS</span>
+                            <span class="badge red">SL</span>
                         {% endif %}
                     </td>
                     <td>${{ "%.8f"|format(pos.entry_price) }}</td>
@@ -631,7 +627,7 @@ HTML = """
                 {% endfor %}
             </table>
             {% else %}
-            <div class="no-data">No closed trades yet. Positions close automatically when they hit take profit (+100%) or stop loss (-35%).</div>
+            <div class="no-data">No closed trades yet.</div>
             {% endif %}
         </div>
     </div>
@@ -642,7 +638,6 @@ HTML = """
             <h2>Token Log</h2>
             <p>Every token the scanner has discovered</p>
         </div>
-
         <div class="section">
             <h3>All Logged Tokens ({{ token_count }})</h3>
             {% if recent_tokens %}
@@ -650,13 +645,13 @@ HTML = """
                 <tr>
                     <th>Token</th>
                     <th>Type</th>
-                    <th>Risk Score</th>
-                    <th>Logged At</th>
+                    <th>Risk</th>
+                    <th>Logged</th>
                     <th>Link</th>
                 </tr>
                 {% for token in recent_tokens %}
                 <tr>
-                    <td><strong>{{ token.name[:40] if token.name else 'Unknown' }}</strong></td>
+                    <td><strong>{{ token.name[:35] if token.name else 'Unknown' }}</strong></td>
                     <td><span class="badge blue">{{ token.type }}</span></td>
                     <td>
                         {% if token.risk_score and token.risk_score != 'N/A' %}
@@ -675,9 +670,7 @@ HTML = """
                     <td>
                         {% if token.dex_url and token.dex_url != 'N/A' %}
                             <a href="{{ token.dex_url }}" target="_blank">View</a>
-                        {% else %}
-                            -
-                        {% endif %}
+                        {% else %} - {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -687,125 +680,134 @@ HTML = """
             {% endif %}
         </div>
     </div>
-<!-- PAGE: SETTINGS -->
+
+    <!-- PAGE: SETTINGS -->
     <div class="page" id="page-settings">
         <div class="page-header">
             <h2>Settings</h2>
-            <p>Control your bot's behaviour</p>
+            <p>Control your bot behaviour</p>
         </div>
 
-        <!-- STRATEGY MODE -->
         <div class="section">
             <h3>Strategy Mode</h3>
-            <p style="color:#666; font-size:12px; margin-bottom:20px;">
-                Current mode: <span style="color:#00ff88; font-weight:bold;">{{ strategy_name|upper }}</span>
+            <p style="color:var(--text3); font-size:12px; margin-bottom:16px;">
+                Current: <span style="color:var(--green); font-weight:bold;">{{ strategy_name|upper }}</span>
             </p>
-
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
-
+            <div class="strategy-grid">
                 <div class="strategy-card {{ 'active-strategy' if strategy_name == 'conservative' }}"
                      onclick="setStrategy('conservative')">
-                    <h4 style="color:#4488ff; margin-bottom:8px;">Conservative</h4>
-                    <p style="color:#666; font-size:11px; margin-bottom:12px;">Low risk, strict filters</p>
-                    <div style="font-size:11px; color:#aaa;">
-                        <div>Position size: $25</div>
-                        <div>Min risk score: 70</div>
+                    <h4 style="color:var(--blue); margin-bottom:8px;">Conservative</h4>
+                    <p style="color:var(--text3); font-size:11px; margin-bottom:12px;">Low risk, strict filters</p>
+                    <div style="font-size:11px; color:var(--text2); line-height:1.8;">
+                        <div>Position: $25</div>
+                        <div>Min risk: 70/100</div>
                         <div>Min liquidity: $50,000</div>
                         <div>Stop loss: -20%</div>
-                        <div>Take profit: 1.5x, 3x, 5x</div>
+                        <div>TP levels: 1.5x, 3x, 5x</div>
                     </div>
                 </div>
-
                 <div class="strategy-card {{ 'active-strategy' if strategy_name == 'balanced' }}"
                      onclick="setStrategy('balanced')">
-                    <h4 style="color:#00ff88; margin-bottom:8px;">Balanced</h4>
-                    <p style="color:#666; font-size:11px; margin-bottom:12px;">Medium risk, standard filters</p>
-                    <div style="font-size:11px; color:#aaa;">
-                        <div>Position size: $50</div>
-                        <div>Min risk score: 55</div>
+                    <h4 style="color:var(--green); margin-bottom:8px;">Balanced</h4>
+                    <p style="color:var(--text3); font-size:11px; margin-bottom:12px;">Medium risk, standard filters</p>
+                    <div style="font-size:11px; color:var(--text2); line-height:1.8;">
+                        <div>Position: $50</div>
+                        <div>Min risk: 55/100</div>
                         <div>Min liquidity: $20,000</div>
                         <div>Stop loss: -35%</div>
-                        <div>Take profit: 2x, 5x, 10x</div>
+                        <div>TP levels: 2x, 5x, 10x</div>
                     </div>
                 </div>
-
                 <div class="strategy-card {{ 'active-strategy' if strategy_name == 'aggressive' }}"
                      onclick="setStrategy('aggressive')">
-                    <h4 style="color:#ff4444; margin-bottom:8px;">Aggressive</h4>
-                    <p style="color:#666; font-size:11px; margin-bottom:12px;">Higher risk, loose filters</p>
-                    <div style="font-size:11px; color:#aaa;">
-                        <div>Position size: $100</div>
-                        <div>Min risk score: 35</div>
+                    <h4 style="color:var(--red); margin-bottom:8px;">Aggressive</h4>
+                    <p style="color:var(--text3); font-size:11px; margin-bottom:12px;">Higher risk, loose filters</p>
+                    <div style="font-size:11px; color:var(--text2); line-height:1.8;">
+                        <div>Position: $100</div>
+                        <div>Min risk: 35/100</div>
                         <div>Min liquidity: $5,000</div>
                         <div>Stop loss: -50%</div>
-                        <div>Take profit: 2x, 5x, 10x, 20x</div>
+                        <div>TP levels: 2x, 5x, 10x, 20x</div>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <!-- KILL SWITCH -->
         <div class="section">
             <h3>Kill Switch</h3>
-            <p style="color:#666; font-size:12px; margin-bottom:20px;">
-                Instantly stops all trading activity. Use in emergencies.
+            <p style="color:var(--text3); font-size:12px; margin-bottom:16px;">
+                Instantly stops all new trading activity.
             </p>
-            <div style="display:flex; gap:15px;">
-                <button onclick="setKillSwitch(true)"
-                    style="background:#ff444420; color:#ff4444; border:1px solid #ff4444;
-                           padding:12px 24px; border-radius:6px; cursor:pointer;
-                           font-family: Courier New; font-size:13px; letter-spacing:1px;">
-                    STOP ALL TRADING
-                </button>
-                <button onclick="setKillSwitch(false)"
-                    style="background:#00ff8820; color:#00ff88; border:1px solid #00ff88;
-                           padding:12px 24px; border-radius:6px; cursor:pointer;
-                           font-family: Courier New; font-size:13px; letter-spacing:1px;">
-                    RESUME TRADING
-                </button>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <button class="btn-danger" onclick="setKillSwitch(true)">STOP ALL TRADING</button>
+                <button class="btn-success" onclick="setKillSwitch(false)">RESUME TRADING</button>
             </div>
-            <p id="kill-switch-status" style="margin-top:15px; font-size:12px; color:#666;">
-                Status: {{ 'STOPPED' if kill_switch_active else 'RUNNING' }}
+            <p id="kill-switch-status" style="margin-top:15px; font-size:12px; color:var(--text3);">
+                Status: <strong>{{ 'STOPPED' if kill_switch_active else 'RUNNING' }}</strong>
             </p>
         </div>
+    </div>
 
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="showPage('overview', this)">
+        <span class="nav-icon">▣</span>
+        <span class="nav-label">Overview</span>
+    </div>
+    <div class="nav-item" onclick="showPage('positions', this)">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Positions</span>
+    </div>
+    <div class="nav-item" onclick="showPage('history', this)">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">History</span>
+    </div>
+    <div class="nav-item" onclick="showPage('tokens', this)">
+        <span class="nav-icon">◆</span>
+        <span class="nav-label">Tokens</span>
+    </div>
+    <div class="nav-item" onclick="showPage('settings', this)">
+        <span class="nav-icon">⚙</span>
+        <span class="nav-label">Settings</span>
     </div>
 </div>
 
 <script>
-  // Mobile sidebar toggle
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        sidebar.classList.toggle('open');
-        overlay.classList.toggle('active');
-    }
-
-    function closeSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-    }
-
-    // Close sidebar when nav item clicked on mobile
+    // Page navigation
     function showPage(pageId, navItem) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById('page-' + pageId).classList.add('active');
         navItem.classList.add('active');
-        closeSidebar();
+        window.scrollTo(0, 0);
     }
 
-    // Show current timestamp
+    // Timestamp
     function updateTimestamp() {
         const now = new Date();
         document.getElementById('timestamp').textContent = now.toLocaleTimeString();
     }
     updateTimestamp();
+    setInterval(updateTimestamp, 1000);
 
-    // Fetch and display live prices
+    // Theme toggle
+    const html = document.documentElement;
+    const btn = document.getElementById('theme-btn');
+    const saved = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', saved);
+    btn.textContent = saved === 'dark' ? '🌙' : '☀️';
+
+    function toggleTheme() {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        btn.textContent = next === 'dark' ? '🌙' : '☀️';
+        localStorage.setItem('theme', next);
+    }
+
+    // Live prices
     function updateLivePrices() {
         fetch('/api/prices')
             .then(res => res.json())
@@ -814,43 +816,41 @@ HTML = """
                 rows.forEach(el => {
                     const address = el.id.replace('price-', '');
                     const currentPrice = prices[address];
-                    
                     if (currentPrice !== undefined) {
                         const row = el.closest('tr');
                         const entryPriceText = row.querySelector('td:nth-child(2)').textContent;
                         const entryPrice = parseFloat(entryPriceText.replace('$', ''));
                         const invested = parseFloat(row.querySelector('td:nth-child(6)').textContent.replace('$', '').replace(',', ''));
-
                         const changePct = ((currentPrice - entryPrice) / entryPrice) * 100;
                         const currentValue = (invested / entryPrice) * currentPrice;
                         const pnl = currentValue - invested;
 
                         el.textContent = '$' + currentPrice.toFixed(8);
-                        el.style.color = '#e0e0e0';
+                        el.style.color = '';
 
                         const changeEl = document.getElementById('change-' + address);
                         if (changeEl) {
                             const sign = changePct >= 0 ? '+' : '';
                             changeEl.textContent = sign + changePct.toFixed(2) + '%';
-                            changeEl.style.color = changePct >= 0 ? '#00ff88' : '#ff4444';
+                            changeEl.style.color = changePct >= 0 ? 'var(--green)' : 'var(--red)';
                         }
 
                         const valueEl = document.getElementById('value-' + address);
                         if (valueEl) {
                             const sign = pnl >= 0 ? '+' : '';
                             valueEl.textContent = '$' + currentValue.toFixed(2) + ' (' + sign + '$' + pnl.toFixed(2) + ')';
-                            valueEl.style.color = pnl >= 0 ? '#00ff88' : '#ff4444';
+                            valueEl.style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
                         }
                     }
                 });
             })
-            .catch(err => console.log('Price fetch error:', err));
+            .catch(err => console.log('Price error:', err));
     }
 
-    // Load prices immediately then every 30 seconds
     updateLivePrices();
     setInterval(updateLivePrices, 30000);
-// Strategy switcher
+
+    // Strategy switcher
     function setStrategy(strategy) {
         fetch('/api/set_strategy', {
             method: 'POST',
@@ -860,7 +860,7 @@ HTML = """
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert('Strategy changed to ' + strategy + '. Reloading...');
+                alert('Strategy changed to ' + strategy);
                 location.reload();
             }
         });
@@ -870,7 +870,6 @@ HTML = """
     function setKillSwitch(active) {
         const action = active ? 'STOP all trading?' : 'RESUME trading?';
         if (!confirm('Are you sure you want to ' + action)) return;
-
         fetch('/api/kill_switch', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -878,19 +877,19 @@ HTML = """
         })
         .then(res => res.json())
         .then(data => {
-            document.getElementById('kill-switch-status').textContent = 
-                'Status: ' + (active ? 'STOPPED' : 'RUNNING');
+            document.getElementById('kill-switch-status').innerHTML =
+                'Status: <strong>' + (active ? 'STOPPED' : 'RUNNING') + '</strong>';
             alert(active ? 'Trading STOPPED.' : 'Trading RESUMED.');
         });
     }
-    // Auto refresh page every 60 seconds
+
+    // Auto refresh
     setTimeout(() => location.reload(), 60000);
 </script>
 
 </body>
 </html>
 """
-
 @app.route("/")
 def index():
     trades = load_trades()
@@ -927,6 +926,7 @@ def index():
         kill_switch_active=kill_switch_active,
     )
 
+
 @app.route("/api/stats")
 def api_stats():
     trades = load_trades()
@@ -936,13 +936,13 @@ def api_stats():
         "token_count": len(log),
     })
 
+
 @app.route("/api/prices")
 def api_prices():
-    """Fetch live prices for all open positions."""
     import requests as req
     trades = load_trades()
     open_positions = trades.get("open_positions", [])
-    
+
     prices = {}
     for position in open_positions:
         address = position.get("address", "")
@@ -960,7 +960,7 @@ def api_prices():
                     prices[address] = float(price)
         except Exception:
             continue
-    
+
     return jsonify(prices)
 
 
@@ -981,6 +981,7 @@ def kill_switch_route():
     set_kill_switch(active)
     return jsonify({"success": True, "active": active})
 
+
 def run_scheduler():
     try:
         from scanner import run_scan
@@ -991,6 +992,7 @@ def run_scheduler():
             time.sleep(1)
     except Exception as e:
         print(f"Scanner error: {e}")
+
 
 if __name__ == "__main__":
     scanner_thread = threading.Thread(target=run_scheduler, daemon=True)
