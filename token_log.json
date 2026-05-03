@@ -666,5 +666,37 @@
     "risk_score": 95,
     "dex_url": "https://dexscreener.com/solana/8wdxqnnj2wudxs3oqxrqsruiucaayuf9qtgmd43xdddv",
     "logged_at": "2026-05-03 13:20:07 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "This is the first ever Memeable Social media to be tokenized. All creators fee will direct to \n \"Owner of Friendster\" Make Friendster Great Again !",
+    "address": "7sg7o1c1pqkapMGn3o2gdzR4tBLWgqrBaFvRXn4Upump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/7sg7o1c1pqkapmgn3o2gdzr4tblwgqrbafvrxn4upump",
+    "logged_at": "2026-05-03 13:34:43 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "Bxe7BFBwssyT5udeVUeSgnEnk84kffYBJuXwHU8Dpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/bxe7bfbwssyt5udevuesgnenk84kffybjuxwhu8dpump",
+    "logged_at": "2026-05-03 13:34:45 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "GSCwAyEWTctTGCYVWnenKXireWKuj7NhW5iYa2J2pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/gscwayewtcttgcyvwnenkxirewkuj7nhw5iya2j2pump",
+    "logged_at": "2026-05-03 13:34:45 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "3TN7iykaZuLy1nznT6JMgbNnK5PTNVnfYLUF3ehspump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3tn7iykazuly1nznt6jmgbnnk5ptnvnfyluf3ehspump",
+    "logged_at": "2026-05-03 13:34:45 UTC"
   }
 ]

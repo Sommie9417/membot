@@ -317,7 +317,7 @@ def check_open_positions():
             print(Fore.RED + f"   Error fetching price for {name}: {e}")
 
     # Update positions and close any that hit TP or SL
-    closed = update_positions(current_prices)
+    closed, partial_exits = update_positions(current_prices)
 
     for position in closed:
         name = position.get("name", "Unknown")
@@ -334,6 +334,13 @@ def check_open_positions():
                   f"-${abs(pnl_usd):.2f} ({pnl_pct:.1f}%)")
 
         alert_paper_trade_closed(name, symbol, exit_reason, pnl_usd, pnl_pct)
+
+    for exit in partial_exits:
+        name = exit.get("name", "Unknown")
+        symbol = exit.get("symbol", "?")
+        level = exit.get("level", "?")
+        profit = exit.get("profit_usd", 0)
+        print(Fore.GREEN + f"   [PARTIAL EXIT] {name} hit {level} | Profit: +${profit:.2f}")
 
 
 def run_scan():

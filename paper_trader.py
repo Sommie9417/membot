@@ -3,20 +3,24 @@ import os
 from datetime import datetime
 
 # ============================================================
-# PAPER TRADER
-# Simulates buying and selling tokens with fake money
-# Tracks performance so we know if the strategy works
-# before risking a single real dollar
+# PAPER TRADER - UPGRADED WITH PARTIAL PROFIT TAKING
 # ============================================================
 
 PAPER_TRADE_FILE = "paper_trades.json"
-STARTING_BALANCE = 1000.00  # Fake starting balance in USD
-MAX_POSITION_SIZE = 50.00   # Max fake dollars per trade
-MIN_RISK_SCORE = 45         # Only paper buy if risk score is this or higher
+STARTING_BALANCE = 1000.00
+MAX_POSITION_SIZE = 50.00
+MIN_RISK_SCORE = 45
 
-# ============================================================
-# LOAD / SAVE
-# ============================================================
+# Profit taking levels
+PROFIT_LEVELS = [
+    (2.0, 0.30),   # At 2x: sell 30%
+    (5.0, 0.50),   # At 5x: sell 50% of remaining
+    (10.0, 0.75),  # At 10x: sell 75% of remaining
+]
+
+STOP_LOSS_PCT = 0.35
+TRAILING_STOP_PCT = 0.20
+
 
 def load_trades():
     if os.path.exists(PAPER_TRADE_FILE):
@@ -46,24 +50,16 @@ def save_trades(data):
         json.dump(data, f, indent=2)
 
 
-# ============================================================
-# OPEN A PAPER TRADE
-# Called when scanner finds a token that passes risk filter
-# ============================================================
-
 def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url):
     state = load_trades()
 
-    # Check if we already have a position in this token
     existing = [p for p in state["open_positions"] if p["address"] == address]
     if existing:
         return False, "Already have open position in this token"
 
-    # Check we have enough fake balance
     if state["balance"] < MAX_POSITION_SIZE:
         return False, "Insufficient paper balance"
 
-    # Calculate how many tokens we are paper buying
     if not entry_price or float(entry_price) <= 0:
         return False, "Invalid entry price"
 
@@ -71,24 +67,27 @@ def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url):
     amount_usd = MAX_POSITION_SIZE
     tokens_bought = amount_usd / price
 
-    # Create the position
     position = {
         "name": name,
         "symbol": symbol,
         "address": address,
         "entry_price": price,
         "tokens_bought": tokens_bought,
+        "tokens_remaining": tokens_bought,
         "amount_invested_usd": amount_usd,
+        "amount_remaining_usd": amount_usd,
+        "realized_profit": 0.0,
         "risk_score": risk_score,
         "dex_url": dex_url,
         "opened_at": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"),
-        "stop_loss_price": price * 0.65,    # Auto stop loss at -35%
-        "take_profit_price": price * 2.0,   # Auto take profit at 2x
+        "stop_loss_price": price * (1 - STOP_LOSS_PCT),
         "highest_price_seen": price,
+        "trailing_stop_price": price * (1 - STOP_LOSS_PCT),
+        "profit_levels_hit": [],
+        "partial_exits": [],
         "status": "open",
     }
 
-    # Deduct from balance
     state["balance"] -= amount_usd
     state["total_invested"] += amount_usd
     state["open_positions"].append(position)
@@ -98,66 +97,112 @@ def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url):
     return True, position
 
 
-# ============================================================
-# UPDATE POSITIONS
-# Called every scan to check if any open positions
-# have hit their take profit or stop loss
-# ============================================================
-
 def update_positions(current_prices: dict):
-    """
-    current_prices: dict of { address: current_price_usd }
-    """
     state = load_trades()
     still_open = []
     closed_this_update = []
+    partial_exits_this_update = []
 
     for position in state["open_positions"]:
         address = position["address"]
         current_price = current_prices.get(address)
 
         if current_price is None:
-            # We don't have a current price for this token yet
             still_open.append(position)
             continue
 
         current_price = float(current_price)
 
-        # Update highest price seen (for trailing stop later)
         if current_price > position["highest_price_seen"]:
             position["highest_price_seen"] = current_price
+            new_trailing = current_price * (1 - TRAILING_STOP_PCT)
+            if new_trailing > position["trailing_stop_price"]:
+                position["trailing_stop_price"] = new_trailing
 
-        # Calculate current value
-        current_value = position["tokens_bought"] * current_price
-        profit_loss = current_value - position["amount_invested_usd"]
-        profit_loss_pct = (profit_loss / position["amount_invested_usd"]) * 100
+        multiplier = current_price / position["entry_price"]
+        tokens_remaining = position["tokens_remaining"]
+        for (target_multiplier, sell_fraction) in PROFIT_LEVELS:
+            level_key = f"{target_multiplier}x"
+            if multiplier >= target_multiplier and level_key not in position["profit_levels_hit"]:
+                tokens_to_sell = tokens_remaining * sell_fraction
+                sell_value = tokens_to_sell * current_price
+                cost_basis = tokens_to_sell * position["entry_price"]
+                partial_profit = sell_value - cost_basis
 
-        # Check stop loss
-        if current_price <= position["stop_loss_price"]:
+                position["tokens_remaining"] -= tokens_to_sell
+                position["realized_profit"] += partial_profit
+                position["profit_levels_hit"].append(level_key)
+                state["balance"] += sell_value
+                state["total_profit_loss"] += partial_profit
+
+                exit_record = {
+                    "level": level_key,
+                    "price": current_price,
+                    "tokens_sold": tokens_to_sell,
+                    "value_usd": sell_value,
+                    "profit_usd": partial_profit,
+                    "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"),
+                }
+                position["partial_exits"].append(exit_record)
+
+                partial_exits_this_update.append({
+                    "name": position["name"],
+                    "symbol": position["symbol"],
+                    "level": level_key,
+                    "profit_usd": partial_profit,
+                    "sell_value": sell_value,
+                })
+
+                print(f"[PARTIAL EXIT] {position['name']} hit {level_key} - "
+                      f"Sold {sell_fraction*100:.0f}% | "
+                      f"Profit: +${partial_profit:.2f}")
+
+                tokens_remaining = position["tokens_remaining"]
+
+        effective_stop = max(position["stop_loss_price"], position["trailing_stop_price"])
+
+        if current_price <= effective_stop:
+            remaining_value = position["tokens_remaining"] * current_price
+            remaining_cost = position["tokens_remaining"] * position["entry_price"]
+            remaining_pnl = remaining_value - remaining_cost
+            total_pnl = position["realized_profit"] + remaining_pnl
+            total_pnl_pct = (total_pnl / position["amount_invested_usd"]) * 100
+
             position["exit_price"] = current_price
             position["exit_reason"] = "STOP LOSS"
-            position["profit_loss_usd"] = profit_loss
-            position["profit_loss_pct"] = profit_loss_pct
+            position["profit_loss_usd"] = total_pnl
+            position["profit_loss_pct"] = total_pnl_pct
             position["closed_at"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
             position["status"] = "closed"
-            state["balance"] += current_value
-            state["total_profit_loss"] += profit_loss
-            state["losses"] += 1
+
+            state["balance"] += remaining_value
+            state["total_profit_loss"] += remaining_pnl
+
+            if total_pnl >= 0:
+                state["wins"] += 1
+            else:
+                state["losses"] += 1
+
             state["closed_positions"].append(position)
             closed_this_update.append(position)
             continue
 
-        # Check take profit
-        if current_price >= position["take_profit_price"]:
+        if position["tokens_remaining"] <= 0:
+            total_pnl = position["realized_profit"]
+            total_pnl_pct = (total_pnl / position["amount_invested_usd"]) * 100
+
             position["exit_price"] = current_price
-            position["exit_reason"] = "TAKE PROFIT"
-            position["profit_loss_usd"] = profit_loss
-            position["profit_loss_pct"] = profit_loss_pct
+            position["exit_reason"] = "FULLY EXITED"
+            position["profit_loss_usd"] = total_pnl
+            position["profit_loss_pct"] = total_pnl_pct
             position["closed_at"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
             position["status"] = "closed"
-            state["balance"] += current_value
-            state["total_profit_loss"] += profit_loss
-            state["wins"] += 1
+
+            if total_pnl >= 0:
+                state["wins"] += 1
+            else:
+                state["losses"] += 1
+
             state["closed_positions"].append(position)
             closed_this_update.append(position)
             continue
@@ -166,13 +211,8 @@ def update_positions(current_prices: dict):
 
     state["open_positions"] = still_open
     save_trades(state)
-    return closed_this_update
+    return closed_this_update, partial_exits_this_update
 
-
-# ============================================================
-# PRINT PORTFOLIO SUMMARY
-# Shows current state of all paper trades
-# ============================================================
 
 def print_portfolio():
     state = load_trades()
@@ -197,12 +237,14 @@ def print_portfolio():
         print(f"\n   OPEN POSITIONS ({len(state['open_positions'])}):")
         print("-" * 60)
         for pos in state["open_positions"]:
+            levels_hit = ', '.join(pos.get('profit_levels_hit', [])) or 'None'
             print(f"   {pos['name']} ({pos['symbol']})")
-            print(f"   Entry Price  : ${pos['entry_price']:.8f}")
-            print(f"   Invested     : ${pos['amount_invested_usd']:,.2f}")
-            print(f"   Stop Loss    : ${pos['stop_loss_price']:.8f}")
-            print(f"   Take Profit  : ${pos['take_profit_price']:.8f}")
-            print(f"   Opened At    : {pos['opened_at']}")
+            print(f"   Entry Price    : ${pos['entry_price']:.8f}")
+            print(f"   Invested       : ${pos['amount_invested_usd']:,.2f}")
+            print(f"   Realized P/L   : ${pos['realized_profit']:,.2f}")
+            print(f"   Levels Hit     : {levels_hit}")
+            print(f"   Trailing Stop  : ${pos['trailing_stop_price']:.8f}")
+            print(f"   Opened At      : {pos['opened_at']}")
             print("-" * 60)
     else:
         print("\n   No open positions.")
@@ -213,7 +255,7 @@ def print_portfolio():
         for pos in state["closed_positions"][-5:]:
             result = "WIN" if pos["profit_loss_usd"] > 0 else "LOSS"
             print(f"   {pos['name']} ({pos['symbol']}) --- {result}")
-            print(f"   Exit Reason  : {pos['exit_reason']}")
-            print(f"   P/L          : ${pos['profit_loss_usd']:,.2f} ({pos['profit_loss_pct']:.1f}%)")
-            print(f"   Closed At    : {pos['closed_at']}")
+            print(f"   Exit Reason    : {pos['exit_reason']}")
+            print(f"   P/L            : ${pos['profit_loss_usd']:,.2f} ({pos['profit_loss_pct']:.1f}%)")
+            print(f"   Closed At      : {pos['closed_at']}")
             print("-" * 60)
