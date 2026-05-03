@@ -148,7 +148,7 @@ def scan_tokens():
 def scan_trending():
     print(Fore.CYAN + "\n[SCANNER] Scanning trending Solana pairs...")
 
-    url = url = "https://api.dexscreener.com/latest/dex/search?q=solana"
+    url = "https://api.dexscreener.com/token-boosts/top/v1"
 
     try:
         response = requests.get(url, timeout=10)
@@ -165,6 +165,20 @@ def scan_trending():
         for pair in pairs:
             liquidity = pair.get("liquidity", {}).get("usd", 0) or 0
             volume_5m = pair.get("volume", {}).get("m5", 0) or 0
+            fdv = pair.get("fdv", 0) or 0
+            chain = pair.get("chainId", "") 
+
+            # Only Solana tokens
+            if chain != "solana":
+                continue
+
+            # Skip tokens with too high market cap (not early enough)
+            if fdv > 10_000_000:
+                continue
+
+            # Skip tokens with too much liquidity (already too big)
+            if liquidity > 500_000:
+                continue
 
             if liquidity >= MIN_LIQUIDITY_USD and volume_5m >= MIN_VOLUME_5M:
                 filtered.append(pair)
