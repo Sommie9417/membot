@@ -119,7 +119,6 @@ def scan_tokens():
             print(f"Address : {address}")
             print(f"Link    : {url_link}")
             log_new_token(token)
-            alert_new_token(name, address, url_link)
             print("-" * 60)
 
     except requests.exceptions.RequestException as e:
@@ -223,6 +222,9 @@ def scan_trending():
             print(f"Risk Score  : {risk_label}")
             print(f"Link        : {dex_url}")
             log_trending_pair(pair, risk_score)
+
+            if risk_score >= 70:
+                alert_trending_token(name, symbol, price, liquidity, vol_5m, price_1h, risk_score, dex_url)
 
             if risk_score >= 45 and price and float(price) > 0:
                 success, result = open_paper_trade(
