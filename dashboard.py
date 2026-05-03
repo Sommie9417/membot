@@ -11,7 +11,22 @@ def load_trades():
     if os.path.exists("paper_trades.json"):
         with open("paper_trades.json", "r") as f:
             try:
-                return json.load(f)
+                data = json.load(f)
+                # Fix old positions missing new fields
+                for pos in data.get("open_positions", []):
+                    if "take_profit_price" not in pos:
+                        pos["take_profit_price"] = pos.get("entry_price", 0) * 2.0
+                    if "tokens_remaining" not in pos:
+                        pos["tokens_remaining"] = pos.get("tokens_bought", 0)
+                    if "realized_profit" not in pos:
+                        pos["realized_profit"] = 0.0
+                    if "profit_levels_hit" not in pos:
+                        pos["profit_levels_hit"] = []
+                    if "partial_exits" not in pos:
+                        pos["partial_exits"] = []
+                    if "trailing_stop_price" not in pos:
+                        pos["trailing_stop_price"] = pos.get("stop_loss_price", 0)
+                return data
             except:
                 return {}
     return {}
