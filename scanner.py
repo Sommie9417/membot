@@ -4,7 +4,7 @@ import time
 from colorama import Fore, Style, init
 from logger import log_new_token, log_trending_pair, print_log_summary
 from paper_trader import open_paper_trade, update_positions, print_portfolio
-from alerts import alert_new_token, alert_trending_token, alert_paper_trade_opened, alert_startup
+from alerts import alert_trending_token, alert_paper_trade_opened, alert_startup
 from goplus import check_token_security, format_security_report
 
 # Initialize colorama for colored terminal output

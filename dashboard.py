@@ -406,6 +406,9 @@ HTML = """
                 <tr>
                     <th>Token</th>
                     <th>Entry Price</th>
+                    <th>Current Price</th>
+                    <th>Change</th>
+                    <th>Current Value</th>
                     <th>Invested</th>
                     <th>Stop Loss</th>
                     <th>Take Profit</th>
@@ -419,6 +422,9 @@ HTML = """
                         <span style="color:#444">{{ pos.symbol }}</span>
                     </td>
                     <td>${{ "%.8f"|format(pos.entry_price) }}</td>
+                    <td id="price-{{ pos.address }}" style="color:#444">Loading...</td>
+                    <td id="change-{{ pos.address }}" style="color:#444">...</td>
+                    <td id="value-{{ pos.address }}" style="color:#444">...</td>
                     <td>${{ "%.2f"|format(pos.amount_invested_usd) }}</td>
                     <td class="negative">${{ "%.8f"|format(pos.stop_loss_price) }}</td>
                     <td class="positive">${{ "%.8f"|format(pos.take_profit_price) }}</td>
@@ -568,15 +574,11 @@ HTML = """
 </div>
 
 <script>
-    // Page navigation
+    /// Page navigation
     function showPage(pageId, navItem) {
-        // Hide all pages
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        // Remove active from all nav items
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        // Show selected page
         document.getElementById('page-' + pageId).classList.add('active');
-        // Mark nav item active
         navItem.classList.add('active');
     }
 
@@ -587,7 +589,53 @@ HTML = """
     }
     updateTimestamp();
 
-    // Auto refresh every 60 seconds
+    // Fetch and display live prices
+    function updateLivePrices() {
+        fetch('/api/prices')
+            .then(res => res.json())
+            .then(prices => {
+                const rows = document.querySelectorAll('[id^="price-"]');
+                rows.forEach(el => {
+                    const address = el.id.replace('price-', '');
+                    const currentPrice = prices[address];
+                    
+                    if (currentPrice !== undefined) {
+                        const row = el.closest('tr');
+                        const entryPriceText = row.querySelector('td:nth-child(2)').textContent;
+                        const entryPrice = parseFloat(entryPriceText.replace('$', ''));
+                        const invested = parseFloat(row.querySelector('td:nth-child(6)').textContent.replace('$', '').replace(',', ''));
+
+                        const changePct = ((currentPrice - entryPrice) / entryPrice) * 100;
+                        const currentValue = (invested / entryPrice) * currentPrice;
+                        const pnl = currentValue - invested;
+
+                        el.textContent = '$' + currentPrice.toFixed(8);
+                        el.style.color = '#e0e0e0';
+
+                        const changeEl = document.getElementById('change-' + address);
+                        if (changeEl) {
+                            const sign = changePct >= 0 ? '+' : '';
+                            changeEl.textContent = sign + changePct.toFixed(2) + '%';
+                            changeEl.style.color = changePct >= 0 ? '#00ff88' : '#ff4444';
+                        }
+
+                        const valueEl = document.getElementById('value-' + address);
+                        if (valueEl) {
+                            const sign = pnl >= 0 ? '+' : '';
+                            valueEl.textContent = '$' + currentValue.toFixed(2) + ' (' + sign + '$' + pnl.toFixed(2) + ')';
+                            valueEl.style.color = pnl >= 0 ? '#00ff88' : '#ff4444';
+                        }
+                    }
+                });
+            })
+            .catch(err => console.log('Price fetch error:', err));
+    }
+
+    // Load prices immediately then every 30 seconds
+    updateLivePrices();
+    setInterval(updateLivePrices, 30000);
+
+    // Auto refresh page every 60 seconds
     setTimeout(() => location.reload(), 60000);
 </script>
 
@@ -633,6 +681,33 @@ def api_stats():
         "trades": trades,
         "token_count": len(log),
     })
+
+@app.route("/api/prices")
+def api_prices():
+    """Fetch live prices for all open positions."""
+    import requests as req
+    trades = load_trades()
+    open_positions = trades.get("open_positions", [])
+    
+    prices = {}
+    for position in open_positions:
+        address = position.get("address", "")
+        if not address:
+            continue
+        try:
+            url = f"https://api.dexscreener.com/latest/dex/tokens/{address}"
+            response = req.get(url, timeout=10)
+            data = response.json()
+            pairs = data.get("pairs", [])
+            if pairs:
+                pair = max(pairs, key=lambda x: x.get("liquidity", {}).get("usd", 0) or 0)
+                price = pair.get("priceUsd")
+                if price:
+                    prices[address] = float(price)
+        except Exception:
+            continue
+    
+    return jsonify(prices)
 
 def run_scheduler():
     try:

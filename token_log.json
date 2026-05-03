@@ -603,5 +603,68 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/clm2cmj54jwk1icgrsefbku4unnkuke4rhc1uy7be1wd",
     "logged_at": "2026-05-03 12:24:59 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "EXVVcBrjBPMR9h4H1N5CPuh9acHMTwnbKUSAHcU2pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/exvvcbrjbpmr9h4h1n5cpuh9achmtwnbkusahcu2pump",
+    "logged_at": "2026-05-03 13:19:26 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "8RenjZavoZi85eQnGPnbBh7NSavt58C8WRxoqXaxpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/8renjzavozi85eqngpnbbh7nsavt58c8wrxoqxaxpump",
+    "logged_at": "2026-05-03 13:19:27 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "55v57SG9H1bpxXdMmFDbuYAa8yZ9veniExNJWaiapump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/55v57sg9h1bpxxdmmfdbuyaa8yz9veniexnjwaiapump",
+    "logged_at": "2026-05-03 13:19:27 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "5W1sktAG8WpzePt7HzQwNCq8GEH6y8fzGUtDuzwqsafe",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/5w1sktag8wpzept7hzqwncq8geh6y8fzgutduzwqsafe",
+    "logged_at": "2026-05-03 13:19:27 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "5sqTE8jicVqP3RAsmfYUzDCHsbW2Z32QiafLkXsdpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/5sqte8jicvqp3rasmfyuzdchsbw2z32qiaflkxsdpump",
+    "logged_at": "2026-05-03 13:19:27 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Google Gemini has a new model named \u201cSpark Robin\u201d",
+    "address": "6aoufbpKuh3zyqUbJEPn7ZtTcH3LvzGWfE2Hu9cspump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6aoufbpkuh3zyqubjepn7zttch3lvzgwfe2hu9cspump",
+    "logged_at": "2026-05-03 13:19:27 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "Golden Tempo",
+    "symbol": "TEMPO",
+    "address": "3wL2KuTsaDUX33VvpwCn7st7yxGhY6KKqPkZtMQzpump",
+    "price_usd": "0.0002049",
+    "liquidity_usd": 39444.81,
+    "volume_5m": 7827.95,
+    "volume_24h": 2379619.84,
+    "price_change_1h": -38.97,
+    "price_change_24h": 493,
+    "risk_score": 95,
+    "dex_url": "https://dexscreener.com/solana/8wdxqnnj2wudxs3oqxrqsruiucaayuf9qtgmd43xdddv",
+    "logged_at": "2026-05-03 13:20:07 UTC"
   }
 ]

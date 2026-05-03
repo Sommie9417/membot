@@ -1,6 +1,6 @@
 {
-  "balance": 433.760836544376,
-  "total_invested": 600.0,
+  "balance": 383.760836544376,
+  "total_invested": 650.0,
   "open_positions": [
     {
       "name": "Solana",
@@ -59,7 +59,7 @@
       "opened_at": "2026-05-03 11:42:50 UTC",
       "stop_loss_price": 0.0024661,
       "take_profit_price": 0.007588,
-      "highest_price_seen": 0.003794,
+      "highest_price_seen": 0.003799,
       "status": "open"
     },
     {
@@ -104,7 +104,7 @@
       "opened_at": "2026-05-03 11:44:59 UTC",
       "stop_loss_price": 0.0007403500000000001,
       "take_profit_price": 0.002278,
-      "highest_price_seen": 0.001139,
+      "highest_price_seen": 0.001197,
       "status": "open"
     },
     {
@@ -134,7 +134,7 @@
       "opened_at": "2026-05-03 12:10:09 UTC",
       "stop_loss_price": 0.00030121,
       "take_profit_price": 0.0009268,
-      "highest_price_seen": 0.0004785,
+      "highest_price_seen": 0.0004847,
       "status": "open"
     },
     {
@@ -150,6 +150,21 @@
       "stop_loss_price": 5.87405e-06,
       "take_profit_price": 1.8074e-05,
       "highest_price_seen": 9.037e-06,
+      "status": "open"
+    },
+    {
+      "name": "Golden Tempo",
+      "symbol": "TEMPO",
+      "address": "3wL2KuTsaDUX33VvpwCn7st7yxGhY6KKqPkZtMQzpump",
+      "entry_price": 0.0002049,
+      "tokens_bought": 244021.4738897023,
+      "amount_invested_usd": 50.0,
+      "risk_score": 95,
+      "dex_url": "https://dexscreener.com/solana/8wdxqnnj2wudxs3oqxrqsruiucaayuf9qtgmd43xdddv",
+      "opened_at": "2026-05-03 13:20:09 UTC",
+      "stop_loss_price": 0.000133185,
+      "take_profit_price": 0.0004098,
+      "highest_price_seen": 0.0002098,
       "status": "open"
     }
   ],
@@ -195,7 +210,7 @@
       "closed_at": "2026-05-03 12:29:16 UTC"
     }
   ],
-  "trade_count": 12,
+  "trade_count": 13,
   "wins": 0,
   "losses": 2,
   "total_profit_loss": -66.23916345562401
