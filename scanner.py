@@ -4,7 +4,7 @@ import time
 from colorama import Fore, Style, init
 from logger import log_new_token, log_trending_pair, print_log_summary
 from paper_trader import open_paper_trade, update_positions, print_portfolio
-from alerts import alert_trending_token, alert_paper_trade_opened, alert_startup
+from alerts import alert_trending_token, alert_paper_trade_opened, alert_startup, alert_daily_summary
 from goplus import check_token_security, format_security_report
 
 # Initialize colorama for colored terminal output
@@ -364,6 +364,62 @@ alert_startup()
 run_scan()
 
 schedule.every(CHECK_INTERVAL_SECONDS).seconds.do(run_scan)
+
+def send_daily_summary():
+    from paper_trader import load_trades
+    import requests
+    
+    state = load_trades()
+    balance = state.get("balance", 1000.0)
+    pnl = state.get("total_profit_loss", 0.0)
+    trade_count = state.get("trade_count", 0)
+    wins = state.get("wins", 0)
+    losses = state.get("losses", 0)
+    win_rate = (wins / trade_count * 100) if trade_count > 0 else 0.0
+    open_positions = state.get("open_positions", [])
+
+    # Find best performing open position
+    best_position = None
+    best_change = None
+    for pos in open_positions:
+        address = pos.get("address", "")
+        if not address:
+            continue
+        try:
+            url = f"https://api.dexscreener.com/latest/dex/tokens/{address}"
+            response = requests.get(url, timeout=10)
+            data = response.json()
+            pairs = data.get("pairs", [])
+            if pairs:
+                pair = max(pairs, key=lambda x: x.get("liquidity", {}).get("usd", 0) or 0)
+                price = pair.get("priceUsd")
+                if price:
+                    current = float(price)
+                    entry = pos.get("entry_price", 0)
+                    if entry > 0:
+                        change = ((current - entry) / entry) * 100
+                        if best_change is None or change > best_change:
+                            best_change = change
+                            best_position = {
+                                "name": pos.get("name", "Unknown"),
+                                "change": change
+                            }
+        except Exception:
+            continue
+
+    alert_daily_summary(
+        balance=balance,
+        pnl=pnl,
+        trade_count=trade_count,
+        wins=wins,
+        losses=losses,
+        win_rate=win_rate,
+        open_count=len(open_positions),
+        best_position=best_position
+    )
+
+# Schedule daily summary at 8am
+schedule.every().day.at("08:00").do(send_daily_summary)
 
 while True:
     schedule.run_pending()

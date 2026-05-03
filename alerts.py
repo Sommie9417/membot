@@ -125,3 +125,33 @@ def alert_startup():
         f"- No SOL/BTC/ETH/stablecoins"
     )
     return send_telegram(message)
+    def alert_daily_summary(balance, pnl, trade_count, wins, losses, 
+                         win_rate, open_count, best_position=None):
+    """Send a daily morning summary to Telegram."""
+    
+    sign = "+" if pnl >= 0 else ""
+    performance = "up" if pnl >= 0 else "down"
+
+    best_line = ""
+    if best_position:
+        best_line = (
+            f"\nBest Position  : {best_position['name']} "
+            f"({best_position['change']:+.1f}%)"
+        )
+
+    message = (
+        f"<b>MEMBOT DAILY SUMMARY</b>\n"
+        f"{'=' * 30}\n\n"
+        f"Good morning Chisom!\n"
+        f"Here is your overnight performance.\n\n"
+        f"Balance        : ${balance:,.2f}\n"
+        f"Total P/L      : {sign}${pnl:,.2f}\n"
+        f"Total Trades   : {trade_count}\n"
+        f"Wins           : {wins}\n"
+        f"Losses         : {losses}\n"
+        f"Win Rate       : {win_rate:.1f}%\n"
+        f"Open Positions : {open_count}\n"
+        f"{best_line}\n\n"
+        f"Bot is running. Have a great day!"
+    )
+    return send_telegram(message)
