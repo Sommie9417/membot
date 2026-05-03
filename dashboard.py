@@ -53,6 +53,63 @@ HTML = """
             height: 100vh;
             overflow-y: auto;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-220px);
+        }
+
+        /* HAMBURGER BUTTON */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 200;
+            background: #111;
+            border: 1px solid #1e1e1e;
+            color: #00ff88;
+            font-size: 20px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* OVERLAY */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 99;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-220px);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+                padding-top: 60px;
+            }
         }
 
         .sidebar-logo {
@@ -270,8 +327,14 @@ HTML = """
 </head>
 <body>
 
+<!-- HAMBURGER BUTTON (mobile only) -->
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+
+<!-- OVERLAY (mobile only) -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
 <!-- SIDEBAR -->
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
     <div class="sidebar-logo">
         <h1>MEMBOT</h1>
         <p>SOLANA TRADING BOT</p>
@@ -574,12 +637,28 @@ HTML = """
 </div>
 
 <script>
-    /// Page navigation
+  // Mobile sidebar toggle
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    function closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+    }
+
+    // Close sidebar when nav item clicked on mobile
     function showPage(pageId, navItem) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById('page-' + pageId).classList.add('active');
         navItem.classList.add('active');
+        closeSidebar();
     }
 
     // Show current timestamp
