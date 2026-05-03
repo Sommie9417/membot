@@ -533,5 +533,20 @@
     "risk_score": 100,
     "dex_url": "https://dexscreener.com/solana/pkwihqgfvham7b1ezvq3hj6hbx2raj1l1ziyc8gs6me",
     "logged_at": "2026-05-03 12:04:42 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "Anon Alien",
+    "symbol": "AALIEN",
+    "address": "ARea51UmRfn22Ds7KwFZirSMEEn1gtBdrhW4zLeveeV1",
+    "price_usd": "0.0004634",
+    "liquidity_usd": 56509.71,
+    "volume_5m": 1094.2,
+    "volume_24h": 448739.3,
+    "price_change_1h": 15.73,
+    "price_change_24h": 56.22,
+    "risk_score": 100,
+    "dex_url": "https://dexscreener.com/solana/4prwf2thuksaqwfmmz53mtatqtc18gzbrddw9empwsnp",
+    "logged_at": "2026-05-03 12:10:08 UTC"
   }
 ]

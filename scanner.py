@@ -259,9 +259,81 @@ def scan_trending():
 # ============================================================
 # MAIN
 # ============================================================
+def check_open_positions():
+    """Fetch current prices for all open positions and close if TP/SL hit."""
+    from paper_trader import load_trades, update_positions
+    from alerts import alert_paper_trade_closed
+
+    state = load_trades()
+    open_positions = state.get("open_positions", [])
+
+    if not open_positions:
+        return
+
+    print(Fore.CYAN + "\n[POSITIONS] Checking open positions...")
+
+    current_prices = {}
+
+    for position in open_positions:
+        address = position.get("address", "")
+        name = position.get("name", "Unknown")
+        symbol = position.get("symbol", "?")
+
+        if not address:
+            continue
+
+        try:
+            url = f"https://api.dexscreener.com/latest/dex/tokens/{address}"
+            response = requests.get(url, timeout=10)
+            data = response.json()
+            pairs = data.get("pairs", [])
+
+            if not pairs:
+                print(Fore.YELLOW + f"   No price data for {name}")
+                continue
+
+            # Get most liquid pair
+            pair = max(pairs, key=lambda x: x.get("liquidity", {}).get("usd", 0) or 0)
+            price = pair.get("priceUsd")
+
+            if price:
+                current_prices[address] = float(price)
+                entry = position.get("entry_price", 0)
+                current = float(price)
+                if entry > 0:
+                    change_pct = ((current - entry) / entry) * 100
+                    print(Fore.WHITE + f"   {name} ({symbol}) | "
+                          f"Entry: ${entry:.8f} | "
+                          f"Now: ${current:.8f} | "
+                          f"Change: {change_pct:+.1f}%")
+
+        except Exception as e:
+            print(Fore.RED + f"   Error fetching price for {name}: {e}")
+
+    # Update positions and close any that hit TP or SL
+    closed = update_positions(current_prices)
+
+    for position in closed:
+        name = position.get("name", "Unknown")
+        symbol = position.get("symbol", "?")
+        exit_reason = position.get("exit_reason", "Unknown")
+        pnl_usd = position.get("profit_loss_usd", 0)
+        pnl_pct = position.get("profit_loss_pct", 0)
+
+        if pnl_usd >= 0:
+            print(Fore.GREEN + f"   [CLOSED - WIN] {name} | {exit_reason} | "
+                  f"+${pnl_usd:.2f} (+{pnl_pct:.1f}%)")
+        else:
+            print(Fore.RED + f"   [CLOSED - LOSS] {name} | {exit_reason} | "
+                  f"-${abs(pnl_usd):.2f} ({pnl_pct:.1f}%)")
+
+        alert_paper_trade_closed(name, symbol, exit_reason, pnl_usd, pnl_pct)
+
+
 def run_scan():
     scan_tokens()
     scan_trending()
+    check_open_positions()
     print_log_summary()
     print_portfolio()
 

@@ -1,6 +1,6 @@
 {
-  "balance": 550.0,
-  "total_invested": 450.0,
+  "balance": 500.0,
+  "total_invested": 500.0,
   "open_positions": [
     {
       "name": "Solana",
@@ -74,7 +74,7 @@
       "opened_at": "2026-05-03 11:42:52 UTC",
       "stop_loss_price": 0.0011765,
       "take_profit_price": 0.00362,
-      "highest_price_seen": 0.00181,
+      "highest_price_seen": 0.001894,
       "status": "open"
     },
     {
@@ -89,7 +89,7 @@
       "opened_at": "2026-05-03 11:42:55 UTC",
       "stop_loss_price": 0.0022769500000000002,
       "take_profit_price": 0.007006,
-      "highest_price_seen": 0.003503,
+      "highest_price_seen": 0.003504,
       "status": "open"
     },
     {
@@ -136,10 +136,25 @@
       "take_profit_price": 0.0019894,
       "highest_price_seen": 0.0009947,
       "status": "open"
+    },
+    {
+      "name": "Anon Alien",
+      "symbol": "AALIEN",
+      "address": "ARea51UmRfn22Ds7KwFZirSMEEn1gtBdrhW4zLeveeV1",
+      "entry_price": 0.0004634,
+      "tokens_bought": 107898.14415192058,
+      "amount_invested_usd": 50.0,
+      "risk_score": 100,
+      "dex_url": "https://dexscreener.com/solana/4prwf2thuksaqwfmmz53mtatqtc18gzbrddw9empwsnp",
+      "opened_at": "2026-05-03 12:10:09 UTC",
+      "stop_loss_price": 0.00030121,
+      "take_profit_price": 0.0009268,
+      "highest_price_seen": 0.0004634,
+      "status": "open"
     }
   ],
   "closed_positions": [],
-  "trade_count": 9,
+  "trade_count": 10,
   "wins": 0,
   "losses": 0,
   "total_profit_loss": 0.0
