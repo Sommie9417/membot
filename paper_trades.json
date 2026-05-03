@@ -1,6 +1,6 @@
 {
-  "balance": 650.0,
-  "total_invested": 350.0,
+  "balance": 550.0,
+  "total_invested": 450.0,
   "open_positions": [
     {
       "name": "Solana",
@@ -106,10 +106,40 @@
       "take_profit_price": 0.002278,
       "highest_price_seen": 0.001139,
       "status": "open"
+    },
+    {
+      "name": "NORMIE",
+      "symbol": "NORMIE",
+      "address": "4y874got9bZ2sR42qHYdnfoL6UcdfMaa1SjcP7Ucpump",
+      "entry_price": 9.343e-05,
+      "tokens_bought": 535160.0128438403,
+      "amount_invested_usd": 50.0,
+      "risk_score": 95,
+      "dex_url": "https://dexscreener.com/solana/5vfizrts84x19hsubuqque4xw2tp8pgjrwla4awrrisc",
+      "opened_at": "2026-05-03 12:04:40 UTC",
+      "stop_loss_price": 6.072950000000001e-05,
+      "take_profit_price": 0.00018686,
+      "highest_price_seen": 9.343e-05,
+      "status": "open"
+    },
+    {
+      "name": "BioLLM",
+      "symbol": "BioLLM",
+      "address": "9oxGicd5KXNcthYM6yD23X9zcznQVnHjrAEN38fFpump",
+      "entry_price": 0.0009947,
+      "tokens_bought": 50266.41198351261,
+      "amount_invested_usd": 50.0,
+      "risk_score": 100,
+      "dex_url": "https://dexscreener.com/solana/pkwihqgfvham7b1ezvq3hj6hbx2raj1l1ziyc8gs6me",
+      "opened_at": "2026-05-03 12:04:45 UTC",
+      "stop_loss_price": 0.000646555,
+      "take_profit_price": 0.0019894,
+      "highest_price_seen": 0.0009947,
+      "status": "open"
     }
   ],
   "closed_positions": [],
-  "trade_count": 7,
+  "trade_count": 9,
   "wins": 0,
   "losses": 0,
   "total_profit_loss": 0.0

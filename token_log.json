@@ -479,5 +479,59 @@
     "risk_score": 100,
     "dex_url": "https://dexscreener.com/solana/2i1ctvedhpvvyrdyzt26vsavd17h6ctqs9eq9xoyxfmr",
     "logged_at": "2026-05-03 11:44:59 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "EM3rEkopkcNhSZY3pXkWBYFv8QR5Cw7vYKqzMvDypump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/em3rekopkcnhszy3pxkwbyfv8qr5cw7vykqzmvdypump",
+    "logged_at": "2026-05-03 12:03:47 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "AJXAwkn5q3dstZueqbjfwcGrMsFYQ7HR7hYcHArVpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/ajxawkn5q3dstzueqbjfwcgrmsfyq7hr7hycharvpump",
+    "logged_at": "2026-05-03 12:03:47 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "ud7NAXnQhxD85eYLFZbwxKtuzf5asuTYZw1A3Nppump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/ud7naxnqhxd85eylfzbwxktuzf5asutyzw1a3nppump",
+    "logged_at": "2026-05-03 12:03:47 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "NORMIE",
+    "symbol": "NORMIE",
+    "address": "4y874got9bZ2sR42qHYdnfoL6UcdfMaa1SjcP7Ucpump",
+    "price_usd": "0.00009343",
+    "liquidity_usd": 24523.73,
+    "volume_5m": 665.11,
+    "volume_24h": 530314.61,
+    "price_change_1h": -1.9,
+    "price_change_24h": 171,
+    "risk_score": 95,
+    "dex_url": "https://dexscreener.com/solana/5vfizrts84x19hsubuqque4xw2tp8pgjrwla4awrrisc",
+    "logged_at": "2026-05-03 12:04:37 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "BioLLM",
+    "symbol": "BioLLM",
+    "address": "9oxGicd5KXNcthYM6yD23X9zcznQVnHjrAEN38fFpump",
+    "price_usd": "0.0009947",
+    "liquidity_usd": 114030.24,
+    "volume_5m": 657.46,
+    "volume_24h": 358506.21,
+    "price_change_1h": -2.09,
+    "price_change_24h": -24.86,
+    "risk_score": 100,
+    "dex_url": "https://dexscreener.com/solana/pkwihqgfvham7b1ezvq3hj6hbx2raj1l1ziyc8gs6me",
+    "logged_at": "2026-05-03 12:04:42 UTC"
   }
 ]

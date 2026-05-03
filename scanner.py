@@ -5,6 +5,7 @@ from colorama import Fore, Style, init
 from logger import log_new_token, log_trending_pair, print_log_summary
 from paper_trader import open_paper_trade, update_positions, print_portfolio
 from alerts import alert_new_token, alert_trending_token, alert_paper_trade_opened, alert_startup
+from goplus import check_token_security, format_security_report
 
 # Initialize colorama for colored terminal output
 init(autoreset=True)
@@ -212,6 +213,11 @@ def scan_trending():
             risk_score = calculate_risk_score(pair)
             risk_label = get_risk_label(risk_score)
 
+            # Run GoPlus security check
+            token_address = pair.get("baseToken", {}).get("address", "")
+            security = check_token_security(token_address)
+            security_report = format_security_report(security)
+
             print(Fore.WHITE + f"Token       : {name} ({symbol})")
             print(f"Price       : ${price}")
             print(f"Liquidity   : ${liquidity:,.0f}")
@@ -220,13 +226,14 @@ def scan_trending():
             print(f"1h Change   : {price_1h}%")
             print(f"24h Change  : {price_24h}%")
             print(f"Risk Score  : {risk_label}")
+            print(f"Security    : {security_report}")
             print(f"Link        : {dex_url}")
             log_trending_pair(pair, risk_score)
 
             if risk_score >= 70:
                 alert_trending_token(name, symbol, price, liquidity, vol_5m, price_1h, risk_score, dex_url)
 
-            if risk_score >= 45 and price and float(price) > 0:
+            if risk_score >= 45 and security["safe"] and price and float(price) > 0:
                 success, result = open_paper_trade(
                     name=name,
                     symbol=symbol,
