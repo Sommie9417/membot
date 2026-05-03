@@ -548,5 +548,60 @@
     "risk_score": 100,
     "dex_url": "https://dexscreener.com/solana/4prwf2thuksaqwfmmz53mtatqtc18gzbrddw9empwsnp",
     "logged_at": "2026-05-03 12:10:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Are you even doxxed bro?",
+    "address": "AthbBQNmhXWxdCwvxzhf9so4NsKjB4UxKtXGReTcdoge",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/athbbqnmhxwxdcwvxzhf9so4nskjb4uxktxgretcdoge",
+    "logged_at": "2026-05-03 12:19:45 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "SPARKLE.\nSOB. TRANSFORM.\nHODL FOREVER.\n\u30a2\u30cb\u30e1\u5316\u3055\u308c\u305f \u30fb \u63a8\u3057\u306e\u30c8\u30fc\u30af\u30f3\n$ANIME is the otaku memecoin on Solana. Episode 1 of a 1000-episode arc. The opening theme has not stopped playing since mainnet. The ending credits will roll when the chart says so. There is a transformation sequence between every red candle and every green candle. Doki doki hodl.",
+    "address": "GxpH45FniQLsM3RzFfhQSVDwaFfHQkrPC52cNn8mNCsC",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/gxph45fniqlsm3rzffhqsvdwaffhqkrpc52cnn8mncsc",
+    "logged_at": "2026-05-03 12:22:14 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "Trumpcoin",
+    "symbol": "Trumpcoin",
+    "address": "DzG9PumAiq5uHVzEKxYUGX2beC2pJTESGPFG9wN9pump",
+    "price_usd": "0.000009037",
+    "liquidity_usd": 7491.06,
+    "volume_5m": 605.04,
+    "volume_24h": 268886.59,
+    "price_change_1h": -34.5,
+    "price_change_24h": -74.11,
+    "risk_score": 85,
+    "dex_url": "https://dexscreener.com/solana/32wpugxhwstumbolrlhuuvkormcfzlihdla5mf5pvyss",
+    "logged_at": "2026-05-03 12:23:26 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Since no one wants to run this correctly, ill do it \n\nThis might actually be the animal runner of the day, \n\nThis turtle named Freddy is going super viral with over 1.5M views in just 15 hours\n\nWhat's so cool about Freddy is the fact that he's got a identical hat to Achi (WIF) dog",
+    "address": "J42xMh4sAHLdrBjNTDgKNcPym5A83Ut3twc7L5rQpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/j42xmh4sahldrbjntdgkncpym5a83ut3twc7l5rqpump",
+    "logged_at": "2026-05-03 12:24:59 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Let's help $legless runner get legs!",
+    "address": "HrMASntkJBPGKWtNp8XNj5nid5EjQ4wkfAscMHW1pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hrmasntkjbpgkwtnp8xnj5nid5ejq4wkfascmhw1pump",
+    "logged_at": "2026-05-03 12:24:59 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "CLm2Cmj54jwK1iCGrsefBKU4UnnkuKE4Rhc1uy7BE1WD",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/clm2cmj54jwk1icgrsefbku4unnkuke4rhc1uy7be1wd",
+    "logged_at": "2026-05-03 12:24:59 UTC"
   }
 ]

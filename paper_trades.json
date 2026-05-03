@@ -1,6 +1,6 @@
 {
-  "balance": 500.0,
-  "total_invested": 500.0,
+  "balance": 433.760836544376,
+  "total_invested": 600.0,
   "open_positions": [
     {
       "name": "Solana",
@@ -89,7 +89,7 @@
       "opened_at": "2026-05-03 11:42:55 UTC",
       "stop_loss_price": 0.0022769500000000002,
       "take_profit_price": 0.007006,
-      "highest_price_seen": 0.003504,
+      "highest_price_seen": 0.003508,
       "status": "open"
     },
     {
@@ -105,21 +105,6 @@
       "stop_loss_price": 0.0007403500000000001,
       "take_profit_price": 0.002278,
       "highest_price_seen": 0.001139,
-      "status": "open"
-    },
-    {
-      "name": "NORMIE",
-      "symbol": "NORMIE",
-      "address": "4y874got9bZ2sR42qHYdnfoL6UcdfMaa1SjcP7Ucpump",
-      "entry_price": 9.343e-05,
-      "tokens_bought": 535160.0128438403,
-      "amount_invested_usd": 50.0,
-      "risk_score": 95,
-      "dex_url": "https://dexscreener.com/solana/5vfizrts84x19hsubuqque4xw2tp8pgjrwla4awrrisc",
-      "opened_at": "2026-05-03 12:04:40 UTC",
-      "stop_loss_price": 6.072950000000001e-05,
-      "take_profit_price": 0.00018686,
-      "highest_price_seen": 9.343e-05,
       "status": "open"
     },
     {
@@ -149,13 +134,69 @@
       "opened_at": "2026-05-03 12:10:09 UTC",
       "stop_loss_price": 0.00030121,
       "take_profit_price": 0.0009268,
-      "highest_price_seen": 0.0004634,
+      "highest_price_seen": 0.0004785,
+      "status": "open"
+    },
+    {
+      "name": "Trumpcoin",
+      "symbol": "Trumpcoin",
+      "address": "DzG9PumAiq5uHVzEKxYUGX2beC2pJTESGPFG9wN9pump",
+      "entry_price": 9.037e-06,
+      "tokens_bought": 5532809.560694921,
+      "amount_invested_usd": 50.0,
+      "risk_score": 85,
+      "dex_url": "https://dexscreener.com/solana/32wpugxhwstumbolrlhuuvkormcfzlihdla5mf5pvyss",
+      "opened_at": "2026-05-03 12:23:28 UTC",
+      "stop_loss_price": 5.87405e-06,
+      "take_profit_price": 1.8074e-05,
+      "highest_price_seen": 9.037e-06,
       "status": "open"
     }
   ],
-  "closed_positions": [],
-  "trade_count": 10,
+  "closed_positions": [
+    {
+      "name": "NORMIE",
+      "symbol": "NORMIE",
+      "address": "4y874got9bZ2sR42qHYdnfoL6UcdfMaa1SjcP7Ucpump",
+      "entry_price": 9.343e-05,
+      "tokens_bought": 535160.0128438403,
+      "amount_invested_usd": 50.0,
+      "risk_score": 95,
+      "dex_url": "https://dexscreener.com/solana/5vfizrts84x19hsubuqque4xw2tp8pgjrwla4awrrisc",
+      "opened_at": "2026-05-03 12:04:40 UTC",
+      "stop_loss_price": 6.072950000000001e-05,
+      "take_profit_price": 0.00018686,
+      "highest_price_seen": 9.343e-05,
+      "status": "closed",
+      "exit_price": 5.481e-06,
+      "exit_reason": "STOP LOSS",
+      "profit_loss_usd": -47.06678796960291,
+      "profit_loss_pct": -94.13357593920583,
+      "closed_at": "2026-05-03 12:21:08 UTC"
+    },
+    {
+      "name": "NORMIE",
+      "symbol": "NORMIE",
+      "address": "4y874got9bZ2sR42qHYdnfoL6UcdfMaa1SjcP7Ucpump",
+      "entry_price": 5.401e-06,
+      "tokens_bought": 9257544.899092762,
+      "amount_invested_usd": 50.0,
+      "risk_score": 85,
+      "dex_url": "https://dexscreener.com/solana/5vfizrts84x19hsubuqque4xw2tp8pgjrwla4awrrisc",
+      "opened_at": "2026-05-03 12:23:22 UTC",
+      "stop_loss_price": 3.51065e-06,
+      "take_profit_price": 1.0802e-05,
+      "highest_price_seen": 5.401e-06,
+      "status": "closed",
+      "exit_price": 3.33e-06,
+      "exit_reason": "STOP LOSS",
+      "profit_loss_usd": -19.172375486021103,
+      "profit_loss_pct": -38.344750972042206,
+      "closed_at": "2026-05-03 12:29:16 UTC"
+    }
+  ],
+  "trade_count": 12,
   "wins": 0,
-  "losses": 0,
-  "total_profit_loss": 0.0
+  "losses": 2,
+  "total_profit_loss": -66.23916345562401
 }
