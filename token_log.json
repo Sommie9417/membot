@@ -1133,5 +1133,29 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/gp8h8akhvqendf2aqak8xxmyxplpz11wbyf6ggpfpump",
     "logged_at": "2026-05-04 21:18:49 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "SlabVaultFi ($SVF) is a Solana token powering a live RWA flywheel.\n\nFees \u2192 Gacha pulls \u2192 Graded cards \u2192 Public vault.\n\nAll assets are stored in a multisig treasury and the process is streamed and transparent.",
+    "address": "6ZxRa2CWtAcWKb58RMJABuiUYWu9o4oM76QCyMVLpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6zxra2cwtacwkb58rmjabuiuywu9o4om76qcymvlpump",
+    "logged_at": "2026-05-04 21:37:06 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "7fKgyG4xG1NfdcVGf4pt46RD4Y24ipQtg3tbbSempump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/7fkgyg4xg1nfdcvgf4pt46rd4y24ipqtg3tbbsempump",
+    "logged_at": "2026-05-04 21:37:08 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "OG Ebay on Pumpfun",
+    "address": "GtXvZ85zmcYr5p6uccMiL4jfKv2Hs7RoH8f2Sg8Vkua6",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/gtxvz85zmcyr5p6uccmil4jfkv2hs7roh8f2sg8vkua6",
+    "logged_at": "2026-05-04 21:37:09 UTC"
   }
 ]

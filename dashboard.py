@@ -519,6 +519,7 @@ HTML = """
                 <tr>
                     <th>Token</th>
                     <th>Entry</th>
+                    <th>Entry MCap</th>
                     <th>Current</th>
                     <th>Change</th>
                     <th>Value</th>
@@ -535,6 +536,7 @@ HTML = """
                         <span style="color:var(--text3)">{{ pos.symbol }}</span>
                     </td>
                     <td>${{ "%.8f"|format(pos.entry_price) }}</td>
+                    <td>${{ "{:,.0f}".format(pos.entry_mcap) if pos.entry_mcap else 'N/A' }}</td>
                     <td id="price-{{ pos.address }}" style="color:var(--text3)">Loading...</td>
                     <td id="change-{{ pos.address }}" style="color:var(--text3)">...</td>
                     <td id="value-{{ pos.address }}" style="color:var(--text3)">...</td>
@@ -595,7 +597,9 @@ HTML = """
                     <th>Token</th>
                     <th>Exit</th>
                     <th>Entry</th>
+                    <th>Entry MCap</th>
                     <th>Exit Price</th>
+                    <th>Exit MCap</th>
                     <th>P/L USD</th>
                     <th>P/L %</th>
                     <th>Closed</th>
@@ -615,7 +619,9 @@ HTML = """
                         {% endif %}
                     </td>
                     <td>${{ "%.8f"|format(pos.entry_price) }}</td>
+                    <td>${{ "{:,.0f}".format(pos.entry_mcap) if pos.entry_mcap else 'N/A' }}</td>
                     <td>${{ "%.8f"|format(pos.exit_price) }}</td>
+                    <td>${{ "{:,.0f}".format(pos.exit_mcap) if pos.exit_mcap else 'N/A' }}</td>
                     <td class="{{ 'positive' if pos.profit_loss_usd >= 0 else 'negative' }}">
                         {{ '+' if pos.profit_loss_usd >= 0 else '' }}${{ "%.2f"|format(pos.profit_loss_usd) }}
                     </td>

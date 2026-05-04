@@ -309,6 +309,7 @@ def scan_trending():
                     risk_score=risk_score,
                     dex_url=dex_url,
                     max_position_size=MAX_POSITION_SIZE,
+                    mcap=mcap,
                 )
                 if success:
                     print(Fore.GREEN + f"   [PAPER TRADE OPENED] Bought ${MAX_POSITION_SIZE} of {symbol} at ${price}")

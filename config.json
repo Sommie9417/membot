@@ -1,5 +1,5 @@
 {
-  "strategy": "conservative",
+  "strategy": "balanced",
   "kill_switch": false,
-  "updated_at": "2026-05-03 18:54:24 UTC"
+  "updated_at": "2026-05-04 21:38:47 UTC"
 }

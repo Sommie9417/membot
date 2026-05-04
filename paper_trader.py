@@ -50,7 +50,7 @@ def save_trades(data):
         json.dump(data, f, indent=2)
 
 
-def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url, max_position_size=None):
+def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url, max_position_size=None, mcap=None):
     state = load_trades()
 
     existing = [p for p in state["open_positions"] if p["address"] == address]
@@ -72,6 +72,7 @@ def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url, ma
         "symbol": symbol,
         "address": address,
         "entry_price": price,
+        "entry_mcap": mcap or 0,
         "tokens_bought": tokens_bought,
         "tokens_remaining": tokens_bought,
         "amount_invested_usd": amount_usd,
@@ -171,8 +172,15 @@ def update_positions(current_prices: dict):
             total_pnl = position["realized_profit"] + remaining_pnl
             total_pnl_pct = (total_pnl / position["amount_invested_usd"]) * 100
 
+            # Determine correct exit reason
+            if emergency_exit and current_price > position["stop_loss_price"]:
+                exit_reason = "EMERGENCY EXIT"
+            else:
+                exit_reason = "STOP LOSS"
+
             position["exit_price"] = current_price
-            position["exit_reason"] = "STOP LOSS"
+            position["exit_reason"] = exit_reason
+            position["exit_mcap"] = current_price * position["tokens_bought"]
             position["profit_loss_usd"] = total_pnl
             position["profit_loss_pct"] = total_pnl_pct
             position["closed_at"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
@@ -196,6 +204,7 @@ def update_positions(current_prices: dict):
 
             position["exit_price"] = current_price
             position["exit_reason"] = "FULLY EXITED"
+            position["exit_mcap"] = current_price * position["tokens_bought"]
             position["profit_loss_usd"] = total_pnl
             position["profit_loss_pct"] = total_pnl_pct
             position["closed_at"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
