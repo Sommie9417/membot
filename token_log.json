@@ -1173,5 +1173,37 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/j6yt7q9wcazyj6bttp6nldzxqlzpenf2ttahvwaypump",
     "logged_at": "2026-05-04 21:46:12 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "AuBm1zJMx1vsMycVw7GLHdG9HHKQsq9GwGw1Wkk4pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/aubm1zjmx1vsmycvw7glhdg9hhkqsq9gwgw1wkk4pump",
+    "logged_at": "2026-05-04 21:52:20 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "the brave soldiers that are still here trying to change their lives rug after rug",
+    "address": "4fxpDcp8Td7jCY11rsT6aPERcmbm6AYAbH6hvw1upump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/4fxpdcp8td7jcy11rst6apercmbm6ayabh6hvw1upump",
+    "logged_at": "2026-05-04 21:52:21 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "DeSci Analytics Hub is the curated tracker for the Decentralized Science sector\n\nWe aggregate token data, project signals, and sector news, then layer editorial commentary on top",
+    "address": "3AxTzPD5H6JTjrXgkBqtp9wYpB3fhp2zX2v1zpjKHhu3",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3axtzpd5h6jtjrxgkbqtp9wypb3fhp2zx2v1zpjkhhu3",
+    "logged_at": "2026-05-04 21:54:18 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "THIS IS LITERALLY INSANE, BURRY JUST SOLD HIS ALL GME:\n\n$GME\n stock price is literally also going to zero after their ceo's meme talk\n\nWe need some kind of meme version of GME to run as memecoin\n\nit's Game Over for them now....",
+    "address": "FnkSoACDyRNY6EUkzZZceNcTGSbHtZ7ao9ZAx9x4pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/fnksoacdyrny6eukzzzcenctgsbhtz7ao9zax9x4pump",
+    "logged_at": "2026-05-04 21:56:17 UTC"
   }
 ]

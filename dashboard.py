@@ -272,7 +272,23 @@ HTML = """
             padding: 30px;
             font-size: 12px;
         }
+.clickable-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
+        .clickable-card:hover {
+            border-color: var(--green);
+            transform: translateY(-2px);
+        }
+
+        .card-hint {
+            color: var(--text3);
+            font-size: 9px;
+            margin-top: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
         a { color: var(--green); text-decoration: none; }
         a:hover { text-decoration: underline; }
 
@@ -427,44 +443,70 @@ HTML = """
         </div>
 
         <div class="grid">
-            <div class="card">
+            <div class="card clickable-card" onclick="showDrilldown('balance')">
                 <h3>Balance</h3>
                 <div class="value {{ 'green' if balance >= 1000 else 'red' }}">
                     ${{ "%.2f"|format(balance) }}
                 </div>
+                <div class="card-hint">tap for details</div>
             </div>
-            <div class="card">
+            <div class="card clickable-card" onclick="showDrilldown('pnl')">
                 <h3>Total P/L</h3>
                 <div class="value {{ 'green' if pnl >= 0 else 'red' }}">
                     {{ '+' if pnl >= 0 else '' }}${{ "%.2f"|format(pnl) }}
                 </div>
+                <div class="card-hint">tap for details</div>
             </div>
-            <div class="card">
+            <div class="card clickable-card" onclick="showDrilldown('winrate')">
                 <h3>Win Rate</h3>
                 <div class="value {{ 'green' if win_rate >= 50 else 'red' }}">
                     {{ "%.1f"|format(win_rate) }}%
                 </div>
+                <div class="card-hint">tap for details</div>
             </div>
             <div class="card">
                 <h3>Trades</h3>
                 <div class="value white">{{ trade_count }}</div>
             </div>
-            <div class="card">
+            <div class="card clickable-card" onclick="showDrilldown('wins')">
                 <h3>Wins</h3>
                 <div class="value green">{{ wins }}</div>
+                <div class="card-hint">tap for details</div>
             </div>
-            <div class="card">
+            <div class="card clickable-card" onclick="showDrilldown('losses')">
                 <h3>Losses</h3>
                 <div class="value red">{{ losses }}</div>
+                <div class="card-hint">tap for details</div>
             </div>
-            <div class="card">
+            <div class="card clickable-card" onclick="showPage('positions', document.querySelectorAll('.nav-item')[1])">
                 <h3>Open</h3>
                 <div class="value yellow">{{ open_count }}</div>
+                <div class="card-hint">tap to view</div>
             </div>
-            <div class="card">
+            <div class="card clickable-card" onclick="showPage('tokens', document.querySelectorAll('.nav-item')[3])">
                 <h3>Logged</h3>
                 <div class="value white">{{ token_count }}</div>
+                <div class="card-hint">tap to view</div>
             </div>
+        </div>
+
+        <!-- DRILLDOWN MODAL -->
+        <div id="drilldown-overlay" onclick="closeDrilldown()"
+            style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+                   background:rgba(0,0,0,0.7); z-index:200;">
+        </div>
+
+        <div id="drilldown-modal"
+            style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+                   background:var(--bg2); border:1px solid var(--border); border-radius:12px;
+                   padding:24px; z-index:201; width:90%; max-width:500px; max-height:80vh;
+                   overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3 id="drilldown-title" style="color:var(--green); font-size:14px; letter-spacing:1px;"></h3>
+                <button onclick="closeDrilldown()"
+                    style="background:none; border:none; color:var(--text3); font-size:20px; cursor:pointer;">✕</button>
+            </div>
+            <div id="drilldown-content"></div>
         </div>
 
         <div class="section">
@@ -868,6 +910,147 @@ HTML = """
 
     updateLivePrices();
     setInterval(updateLivePrices, 30000);
+    // Drilldown stats
+    const statsData = {
+        balance: {
+            title: "BALANCE BREAKDOWN",
+            content: `
+                <div style="font-size:13px; line-height:2;">
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Starting Balance</span>
+                        <span style="color:var(--text)">$1,000.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Total P/L</span>
+                        <span style="color:{{ 'var(--green)' if pnl >= 0 else 'var(--red))' }}">${{ '{:+.2f}'.format(pnl) }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Open Positions Value</span>
+                        <span style="color:var(--yellow)">${{ '{:,.2f}'.format(open_count * 50) }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                        <span style="color:var(--text3)">Current Balance</span>
+                        <span style="color:var(--green); font-size:18px; font-weight:bold;">${{ '{:,.2f}'.format(balance) }}</span>
+                    </div>
+                </div>
+            `
+        },
+        pnl: {
+            title: "P/L BREAKDOWN",
+            content: `
+                <div style="font-size:13px; line-height:2;">
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Total Trades</span>
+                        <span style="color:var(--text)">{{ trade_count }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Winning Trades</span>
+                        <span style="color:var(--green)">{{ wins }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Losing Trades</span>
+                        <span style="color:var(--red)">{{ losses }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                        <span style="color:var(--text3)">Net P/L</span>
+                        <span style="color:{{ 'var(--green)' if pnl >= 0 else 'var(--red)' }}; font-size:18px; font-weight:bold;">${{ '{:+,.2f}'.format(pnl) }}</span>
+                    </div>
+                </div>
+            `
+        },
+        winrate: {
+            title: "WIN RATE BREAKDOWN",
+            content: `
+                <div style="font-size:13px; line-height:2;">
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Total Trades</span>
+                        <span style="color:var(--text)">{{ trade_count }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Wins</span>
+                        <span style="color:var(--green)">{{ wins }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span style="color:var(--text3)">Losses</span>
+                        <span style="color:var(--red)">{{ losses }}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                        <span style="color:var(--text3)">Win Rate</span>
+                        <span style="color:{{ 'var(--green)' if win_rate >= 50 else 'var(--red)' }}; font-size:18px; font-weight:bold;">{{ '%.1f'|format(win_rate) }}%</span>
+                    </div>
+                </div>
+            `
+        },
+        wins: {
+            title: "WINNING TRADES",
+            content: `
+                {% if closed_positions %}
+                <table style="width:100%; font-size:11px; border-collapse:collapse;">
+                    <tr>
+                        <th style="color:var(--text3); text-align:left; padding:6px; border-bottom:1px solid var(--border);">Token</th>
+                        <th style="color:var(--text3); text-align:left; padding:6px; border-bottom:1px solid var(--border);">P/L</th>
+                        <th style="color:var(--text3); text-align:left; padding:6px; border-bottom:1px solid var(--border);">%</th>
+                    </tr>
+                    {% for pos in closed_positions %}
+                    {% if pos.profit_loss_usd >= 0 %}
+                    <tr>
+                        <td style="padding:6px; border-bottom:1px solid var(--bg3); color:var(--text);">{{ pos.name[:20] }}</td>
+                        <td style="padding:6px; border-bottom:1px solid var(--bg3); color:var(--green);">+${{ '%.2f'|format(pos.profit_loss_usd) }}</td>
+                        <td style="padding:6px; border-bottom:1px solid var(--bg3); color:var(--green);">+{{ '%.1f'|format(pos.profit_loss_pct) }}%</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+                {% else %}
+                <div style="color:var(--text3); text-align:center; padding:20px;">No winning trades yet.</div>
+                {% endif %}
+            `
+        },
+        losses: {
+            title: "LOSING TRADES",
+            content: `
+                {% if closed_positions %}
+                <table style="width:100%; font-size:11px; border-collapse:collapse;">
+                    <tr>
+                        <th style="color:var(--text3); text-align:left; padding:6px; border-bottom:1px solid var(--border);">Token</th>
+                        <th style="color:var(--text3); text-align:left; padding:6px; border-bottom:1px solid var(--border);">P/L</th>
+                        <th style="color:var(--text3); text-align:left; padding:6px; border-bottom:1px solid var(--border);">%</th>
+                    </tr>
+                    {% for pos in closed_positions %}
+                    {% if pos.profit_loss_usd < 0 %}
+                    <tr>
+                        <td style="padding:6px; border-bottom:1px solid var(--bg3); color:var(--text);">{{ pos.name[:20] }}</td>
+                        <td style="padding:6px; border-bottom:1px solid var(--bg3); color:var(--red);">-${{ '%.2f'|format(pos.profit_loss_usd|abs) }}</td>
+                        <td style="padding:6px; border-bottom:1px solid var(--bg3); color:var(--red);">{{ '%.1f'|format(pos.profit_loss_pct) }}%</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+                {% else %}
+                <div style="color:var(--text3); text-align:center; padding:20px;">No losing trades yet.</div>
+                {% endif %}
+            `
+        }
+    };
+
+    function showDrilldown(type) {
+        const modal = document.getElementById('drilldown-modal');
+        const overlay = document.getElementById('drilldown-overlay');
+        const title = document.getElementById('drilldown-title');
+        const content = document.getElementById('drilldown-content');
+
+        if (!statsData[type]) return;
+
+        title.textContent = statsData[type].title;
+        content.innerHTML = statsData[type].content;
+        modal.style.display = 'block';
+        overlay.style.display = 'block';
+    }
+
+    function closeDrilldown() {
+        document.getElementById('drilldown-modal').style.display = 'none';
+        document.getElementById('drilldown-overlay').style.display = 'none';
+    }
 // Manual trade close
     function closeTrade(address, name, reason) {
         if (!confirm('Close ' + name + ' as ' + reason + '?')) return;
