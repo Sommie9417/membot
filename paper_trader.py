@@ -173,7 +173,9 @@ def update_positions(current_prices: dict):
             total_pnl_pct = (total_pnl / position["amount_invested_usd"]) * 100
 
             # Determine correct exit reason
-            if emergency_exit and current_price > position["stop_loss_price"]:
+            if total_pnl >= 0:
+                exit_reason = "TAKE PROFIT"
+            elif emergency_exit and current_price > position["stop_loss_price"]:
                 exit_reason = "EMERGENCY EXIT"
             else:
                 exit_reason = "STOP LOSS"
@@ -203,7 +205,7 @@ def update_positions(current_prices: dict):
             total_pnl_pct = (total_pnl / position["amount_invested_usd"]) * 100
 
             position["exit_price"] = current_price
-            position["exit_reason"] = "FULLY EXITED"
+            position["exit_reason"] = "TAKE PROFIT" if total_pnl >= 0 else "STOP LOSS"
             position["exit_mcap"] = current_price * position["tokens_bought"]
             position["profit_loss_usd"] = total_pnl
             position["profit_loss_pct"] = total_pnl_pct
