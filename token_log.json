@@ -1157,5 +1157,21 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/gtxvz85zmcyr5p6uccmil4jfkv2hs7roh8f2sg8vkua6",
     "logged_at": "2026-05-04 21:37:09 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "Bab6tzaGYxUCcLTUXG1TSVv4vUaYWC3MLoTDGULGpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/bab6tzagyxuccltuxg1tsvv4vuaywc3mlotdgulgpump",
+    "logged_at": "2026-05-04 21:46:11 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "J6YT7Q9wCazYj6bttp6NLDzXQLZPENf2tTahVWaYpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/j6yt7q9wcazyj6bttp6nldzxqlzpenf2ttahvwaypump",
+    "logged_at": "2026-05-04 21:46:12 UTC"
   }
 ]

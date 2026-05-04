@@ -529,6 +529,7 @@ HTML = """
                     <th>Risk</th>
                     <th>Opened</th>
                     <th>Link</th>
+                    <th>Close</th>
                 </tr>
                 {% for pos in open_positions %}
                 <tr>
@@ -553,7 +554,19 @@ HTML = """
                         {% endif %}
                     </td>
                     <td>{{ pos.opened_at }}</td>
-                    <td><a href="{{ pos.dex_url }}" target="_blank">View</a></td>
+                    <td>
+                        <a href="{{ pos.dex_url }}" target="_blank">View</a>
+                    </td>
+                    <td>
+                        <button class="btn-success" style="padding:4px 8px; font-size:10px;"
+                            onclick="closeTrade('{{ pos.address }}', '{{ pos.name }}', 'TAKE PROFIT')">
+                            TP
+                        </button>
+                        <button class="btn-danger" style="padding:4px 8px; font-size:10px; margin-left:4px;"
+                            onclick="closeTrade('{{ pos.address }}', '{{ pos.name }}', 'STOP LOSS')">
+                            SL
+                        </button>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
@@ -855,7 +868,24 @@ HTML = """
 
     updateLivePrices();
     setInterval(updateLivePrices, 30000);
-
+// Manual trade close
+    function closeTrade(address, name, reason) {
+        if (!confirm('Close ' + name + ' as ' + reason + '?')) return;
+        fetch('/api/close_trade', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({address: address, reason: reason})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(name + ' closed as ' + reason + '. P/L: $' + data.pnl.toFixed(2));
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        });
+    }
     // Strategy switcher
     function setStrategy(strategy) {
         fetch('/api/set_strategy', {
@@ -969,7 +999,69 @@ def api_prices():
 
     return jsonify(prices)
 
+@app.route("/api/close_trade", methods=["POST"])
+def close_trade_route():
+    import requests as req
+    from paper_trader import load_trades, save_trades
+    from datetime import datetime
 
+    data = request.json
+    address = data.get("address")
+    reason = data.get("reason", "MANUAL CLOSE")
+
+    state = load_trades()
+    open_positions = state.get("open_positions", [])
+    found = None
+
+    for pos in open_positions:
+        if pos.get("address") == address:
+            found = pos
+            break
+
+    if not found:
+        return jsonify({"success": False, "message": "Position not found"})
+
+    # Get current price
+    try:
+        url = f"https://api.dexscreener.com/latest/dex/tokens/{address}"
+        response = req.get(url, timeout=10)
+        pair_data = response.json()
+        pairs = pair_data.get("pairs", [])
+        if not pairs:
+            return jsonify({"success": False, "message": "Could not fetch current price"})
+        pair = max(pairs, key=lambda x: x.get("liquidity", {}).get("usd", 0) or 0)
+        current_price = float(pair.get("priceUsd", 0))
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)})
+
+    # Calculate P/L
+    remaining_value = found["tokens_remaining"] * current_price
+    remaining_cost = found["tokens_remaining"] * found["entry_price"]
+    remaining_pnl = remaining_value - remaining_cost
+    total_pnl = found["realized_profit"] + remaining_pnl
+    total_pnl_pct = (total_pnl / found["amount_invested_usd"]) * 100
+
+    found["exit_price"] = current_price
+    found["exit_reason"] = reason
+    found["exit_mcap"] = current_price * found["tokens_bought"]
+    found["profit_loss_usd"] = total_pnl
+    found["profit_loss_pct"] = total_pnl_pct
+    found["closed_at"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    found["status"] = "closed"
+
+    state["balance"] += remaining_value
+    state["total_profit_loss"] += remaining_pnl
+
+    if total_pnl >= 0:
+        state["wins"] += 1
+    else:
+        state["losses"] += 1
+
+    state["open_positions"] = [p for p in open_positions if p.get("address") != address]
+    state["closed_positions"].append(found)
+    save_trades(state)
+
+    return jsonify({"success": True, "pnl": total_pnl, "reason": reason})
 @app.route("/api/set_strategy", methods=["POST"])
 def set_strategy_route():
     from config import set_strategy
