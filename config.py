@@ -3,23 +3,31 @@ import os
 
 # ============================================================
 # CONFIG MANAGER
-# Stores and loads bot settings like strategy mode
 # ============================================================
 
 CONFIG_FILE = "config.json"
 
-# Strategy mode definitions
 STRATEGIES = {
     "conservative": {
         "name": "Conservative",
-        "description": "Low risk, smaller positions, strict filters",
+        "description": "Low risk, strict filters",
         "max_position_size": 25.0,
-        "min_risk_score": 70,
+        "min_risk_score": 75,
         "min_goplus_score": 80,
         "min_liquidity_usd": 50000,
-        "min_volume_5m": 2000,
-        "max_fdv": 5_000_000,
+        "min_volume_5m": 5000,
+        "min_volume_h1": 20000,
+        "max_fdv": 90_000,
+        "min_fdv": 10_000,
+        "min_buys_h1": 50,
+        "max_sell_ratio": 0.45,
+        "min_price_change_h1": -10,
+        "max_price_change_h1": 80,
+        "require_social": True,
+        "require_name": True,
+        "min_holder_threshold": 200,
         "stop_loss_pct": 0.20,
+        "trailing_stop_pct": 0.15,
         "profit_levels": [
             (1.5, 0.30),
             (3.0, 0.50),
@@ -28,14 +36,24 @@ STRATEGIES = {
     },
     "balanced": {
         "name": "Balanced",
-        "description": "Medium risk, standard positions, balanced filters",
+        "description": "Medium risk, balanced filters",
         "max_position_size": 50.0,
-        "min_risk_score": 55,
-        "min_goplus_score": 60,
-        "min_liquidity_usd": 20000,
-        "min_volume_5m": 1000,
-        "max_fdv": 10_000_000,
-        "stop_loss_pct": 0.35,
+        "min_risk_score": 65,
+        "min_goplus_score": 70,
+        "min_liquidity_usd": 30000,
+        "min_volume_5m": 2000,
+        "min_volume_h1": 10000,
+        "max_fdv": 90_000,
+        "min_fdv": 10_000,
+        "min_buys_h1": 30,
+        "max_sell_ratio": 0.55,
+        "min_price_change_h1": -20,
+        "max_price_change_h1": 150,
+        "require_social": True,
+        "require_name": True,
+        "min_holder_threshold": 100,
+        "stop_loss_pct": 0.25,
+        "trailing_stop_pct": 0.20,
         "profit_levels": [
             (2.0, 0.30),
             (5.0, 0.50),
@@ -44,14 +62,24 @@ STRATEGIES = {
     },
     "aggressive": {
         "name": "Aggressive",
-        "description": "Higher risk, larger positions, loose filters",
+        "description": "Higher risk, loose filters",
         "max_position_size": 100.0,
-        "min_risk_score": 35,
-        "min_goplus_score": 40,
-        "min_liquidity_usd": 5000,
+        "min_risk_score": 45,
+        "min_goplus_score": 50,
+        "min_liquidity_usd": 10000,
         "min_volume_5m": 500,
-        "max_fdv": 20_000_000,
-        "stop_loss_pct": 0.50,
+        "min_volume_h1": 2000,
+        "max_fdv": 90_000,
+        "min_fdv": 10_000,
+        "min_buys_h1": 10,
+        "max_sell_ratio": 0.65,
+        "min_price_change_h1": -30,
+        "max_price_change_h1": 300,
+        "require_social": False,
+        "require_name": True,
+        "min_holder_threshold": 50,
+        "stop_loss_pct": 0.35,
+        "trailing_stop_pct": 0.25,
         "profit_levels": [
             (2.0, 0.20),
             (5.0, 0.40),
@@ -65,7 +93,6 @@ DEFAULT_STRATEGY = "balanced"
 
 
 def load_config():
-    """Load config from file or return defaults."""
     if os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, "r") as f:
             try:
@@ -89,20 +116,17 @@ def save_config(data):
 
 
 def get_strategy():
-    """Get the current active strategy settings."""
     config = load_config()
     strategy_key = config.get("strategy", DEFAULT_STRATEGY)
     return STRATEGIES.get(strategy_key, STRATEGIES[DEFAULT_STRATEGY])
 
 
 def get_strategy_name():
-    """Get just the current strategy name."""
     config = load_config()
     return config.get("strategy", DEFAULT_STRATEGY)
 
 
 def set_strategy(strategy_key):
-    """Change the active strategy."""
     if strategy_key not in STRATEGIES:
         return False, f"Unknown strategy: {strategy_key}"
     config = load_config()
@@ -114,13 +138,11 @@ def set_strategy(strategy_key):
 
 
 def is_kill_switch_active():
-    """Check if kill switch is on."""
     config = load_config()
     return config.get("kill_switch", False)
 
 
 def set_kill_switch(active: bool):
-    """Turn kill switch on or off."""
     config = load_config()
     config["kill_switch"] = active
     save_config(config)

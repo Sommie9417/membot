@@ -180,12 +180,54 @@ def scan_trending():
                 symbol = pair.get("baseToken", {}).get("symbol", "").upper()
                 if symbol in BLACKLIST_SYMBOLS:
                     continue
+
+                # Market cap filters
                 if fdv > MAX_FDV:
                     continue
+                if fdv < strategy.get("min_fdv", 0):
+                    continue
+
+                # Liquidity filter
                 if liquidity > 500_000:
                     continue
-                if liquidity >= MIN_LIQUIDITY_USD and volume_5m >= MIN_VOLUME_5M:
-                    filtered.append(pair)
+                if liquidity < MIN_LIQUIDITY_USD:
+                    continue
+
+                # Volume filters
+                volume_h1 = pair.get("volume", {}).get("h1", 0) or 0
+                if volume_5m < MIN_VOLUME_5M:
+                    continue
+                if volume_h1 < strategy.get("min_volume_h1", 0):
+                    continue
+
+                # Buy/sell ratio filter
+                txns = pair.get("txns", {})
+                buys_h1 = txns.get("h1", {}).get("buys", 0) or 0
+                sells_h1 = txns.get("h1", {}).get("sells", 0) or 0
+                total_txns = buys_h1 + sells_h1
+
+                if buys_h1 < strategy.get("min_buys_h1", 0):
+                    continue
+
+                if total_txns > 0:
+                    sell_ratio = sells_h1 / total_txns
+                    if sell_ratio > strategy.get("max_sell_ratio", 1.0):
+                        continue
+
+                # Price change filter (avoid dumps and extreme pumps)
+                price_change_h1 = pair.get("priceChange", {}).get("h1", 0) or 0
+                if price_change_h1 < strategy.get("min_price_change_h1", -100):
+                    continue
+                if price_change_h1 > strategy.get("max_price_change_h1", 1000):
+                    continue
+
+                # Require token to have a real name
+                token_name = pair.get("baseToken", {}).get("name", "")
+                if strategy.get("require_name", True):
+                    if not token_name or token_name.lower() in ["unknown", ""]:
+                        continue
+
+                filtered.append((pair, token))
             except Exception:
                 continue
 
@@ -193,12 +235,10 @@ def scan_trending():
             print(Fore.YELLOW + "No pairs passed the filters this scan.")
             return
 
-        filtered.sort(key=lambda x: x.get("volume", {}).get("m5", 0), reverse=True)
-
         print(Fore.CYAN + f"{len(filtered)} pair(s) passed filters:\n")
         print("-" * 60)
 
-        for pair in filtered[:5]:
+        for pair, token in filtered[:5]:
             name = pair.get("baseToken", {}).get("name", "Unknown")
             symbol = pair.get("baseToken", {}).get("symbol", "?")
             price = pair.get("priceUsd", "N/A")
@@ -216,13 +256,28 @@ def scan_trending():
             security = check_token_security(token_address)
             security_report = format_security_report(security)
 
+            # Get social info from token boost data
+            token_links = token.get("links", []) if token else []
+            social_names = [l.get("type", "website") for l in token_links if l.get("url")]
+            has_website = any(not l.get("type") or l.get("type") == "website" for l in token_links)
+
+            # Get market cap and transaction data
+            txns = pair.get("txns", {})
+            buys_h1 = txns.get("h1", {}).get("buys", 0) or 0
+            sells_h1 = txns.get("h1", {}).get("sells", 0) or 0
+            mcap = pair.get("marketCap", fdv) or 0
+
             print(Fore.WHITE + f"Token       : {name} ({symbol})")
             print(f"Price       : ${price}")
+            print(f"MCap        : ${mcap:,.0f}")
             print(f"Liquidity   : ${liquidity:,.0f}")
             print(f"Vol (5m)    : ${vol_5m:,.0f}")
             print(f"Vol (24h)   : ${vol_24h:,.0f}")
             print(f"1h Change   : {price_1h}%")
             print(f"24h Change  : {price_24h}%")
+            print(f"Buys/Sells  : {buys_h1}/{sells_h1} (1h)")
+            print(f"Socials     : {', '.join(social_names) if social_names else 'None'}")
+            print(f"Website     : {'Yes' if has_website else 'No'}")
             print(f"Risk Score  : {risk_label}")
             print(f"Security    : {security_report}")
             print(f"Link        : {dex_url}")
@@ -236,8 +291,15 @@ def scan_trending():
                     goplus_flags=security.get("findings", [])
                 )
 
-            if (risk_score >= MIN_RISK_SCORE and security["safe"] and
+            # Check social media presence if required
+            has_social = len(social_names) > 0
+
+            social_ok = (not strategy.get("require_social", True)) or has_social
+
+            if (risk_score >= MIN_RISK_SCORE and
+                    security["safe"] and
                     security.get("score", 0) >= MIN_GOPLUS_SCORE and
+                    social_ok and
                     price and float(price) > 0):
                 success, result = open_paper_trade(
                     name=name,
@@ -357,6 +419,7 @@ alert_startup()
 run_scan()
 
 schedule.every(CHECK_INTERVAL_SECONDS).seconds.do(run_scan)
+schedule.every(15).seconds.do(check_open_positions)
 
 
 def send_daily_summary():

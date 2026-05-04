@@ -161,7 +161,10 @@ def update_positions(current_prices: dict):
 
         effective_stop = max(position["stop_loss_price"], position["trailing_stop_price"])
 
-        if current_price <= effective_stop:
+        # Emergency exit if token drops more than 40% from entry in one check
+        emergency_exit = current_price <= position["entry_price"] * 0.60
+
+        if current_price <= effective_stop or emergency_exit:
             remaining_value = position["tokens_remaining"] * current_price
             remaining_cost = position["tokens_remaining"] * position["entry_price"]
             remaining_pnl = remaining_value - remaining_cost
