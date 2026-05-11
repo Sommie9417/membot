@@ -1672,5 +1672,37 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/3vkvz2mb36w4mkxznuxsjbszpgxpqetzf6qw8qsrpump",
     "logged_at": "2026-05-11 18:30:19 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "V5dLJS3L5KGN9ZPBHFt2TegWtSDAq9jKM6mwawGpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/v5dljs3l5kgn9zpbhft2tegwtsdaq9jkm6mwawgpump",
+    "logged_at": "2026-05-11 18:38:47 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Professionally Jiggly",
+    "address": "593xGp2Ji5FWeXbE9bAbsp1rc2cCnpTbRvb4rrikpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/593xgp2ji5fwexbe9babsp1rc2ccnptbrvb4rrikpump",
+    "logged_at": "2026-05-11 18:38:50 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "CTO lead of $FU to 11.7M \n\nDev of $PFU to 450K\n\nNow we are sending $BFU Baby Farting Unicorn",
+    "address": "Dbs34iZmWvZ3x4eCC1KvRtS2Q8PuRGWYGNcpH61Rpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/dbs34izmwvz3x4ecc1kvrts2q8purgwygncph61rpump",
+    "logged_at": "2026-05-11 18:38:53 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "$TROLL absolutely ripping sitting at 125M meet $microtroll $TROLL 's little brother, too small to see on the chart, too stubborn to leave he doesn't pump, he doesn't dump. Just sits there between your dust tokens doing absolutely nothing, microscopically",
+    "address": "HkU2cMmgYwskAuWj1Z9LAaGZTRBBZUBKTk3DGoXZpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hku2cmmgywskauwj1z9laagztrbbzubktk3dgoxzpump",
+    "logged_at": "2026-05-11 18:38:55 UTC"
   }
 ]
