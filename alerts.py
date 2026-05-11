@@ -5,7 +5,7 @@ import requests
 # Clean, detailed alerts only for high quality tokens
 # ============================================================
 
-TELEGRAM_TOKEN = "8492337730:AAHWMPLw2MD1Cy9NW1k32rVcLE0yHixKll4"
+TELEGRAM_TOKEN = "8564559248:AAHhsssaA4iBDCx7jOlZ4-PghrxSjSDAelI"
 TELEGRAM_CHAT_ID = "5856502370"
 
 def send_telegram(message):
