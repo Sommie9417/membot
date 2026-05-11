@@ -13,13 +13,14 @@ MIN_RISK_SCORE = 45
 
 # Profit taking levels
 PROFIT_LEVELS = [
-    (2.0, 0.30),   # At 2x: sell 30%
-    (5.0, 0.50),   # At 5x: sell 50% of remaining
-    (10.0, 0.75),  # At 10x: sell 75% of remaining
+    (1.5, 0.25),   # At 1.5x: sell 25% — secure early profit
+    (2.0, 0.25),   # At 2x: sell 25% of remaining — lock more profit
+    (5.0, 0.35),   # At 5x: sell 35% of remaining — let winners run
+    (10.0, 0.50),  # At 10x: sell 50% of remaining — massive win
 ]
 
-STOP_LOSS_PCT = 0.35
-TRAILING_STOP_PCT = 0.20
+STOP_LOSS_PCT = 0.30
+TRAILING_STOP_PCT = 0.40
 
 
 def load_trades():
@@ -116,9 +117,12 @@ def update_positions(current_prices: dict):
 
         if current_price > position["highest_price_seen"]:
             position["highest_price_seen"] = current_price
-            new_trailing = current_price * (1 - TRAILING_STOP_PCT)
-            if new_trailing > position["trailing_stop_price"]:
-                position["trailing_stop_price"] = new_trailing
+            # Only activate trailing stop after 1.5x gain
+            # Before that use fixed stop loss only
+            if current_price >= position["entry_price"] * 1.5:
+                new_trailing = current_price * (1 - TRAILING_STOP_PCT)
+                if new_trailing > position["trailing_stop_price"]:
+                    position["trailing_stop_price"] = new_trailing
 
         multiplier = current_price / position["entry_price"]
         tokens_remaining = position["tokens_remaining"]
