@@ -157,3 +157,21 @@ def alert_daily_summary(balance, pnl, trade_count, wins, losses,
         f"Bot is running. Have a great day!"
     )
     return send_telegram(message)
+
+
+def alert_pump_launch(name, symbol, market_cap, age_minutes, socials, reply_count, pump_url, dex_url):
+    """Alert when a quality Pump.fun launch is detected."""
+    social_str = ', '.join(socials) if socials else 'None'
+
+    message = (
+        f"<b>NEW PUMP.FUN LAUNCH</b>\n"
+        f"{'=' * 30}\n\n"
+        f"<b>{name} ({symbol})</b>\n\n"
+        f"MCap      : ${market_cap:,.0f}\n"
+        f"Age       : {age_minutes:.1f} minutes old\n"
+        f"Socials   : {social_str}\n"
+        f"Community : {reply_count} replies\n\n"
+        f"<a href='{pump_url}'>View on Pump.fun</a>\n"
+        f"<a href='{dex_url}'>View on DexScreener</a>"
+    )
+    return send_telegram(message)

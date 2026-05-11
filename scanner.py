@@ -7,7 +7,7 @@ from paper_trader import open_paper_trade, update_positions, print_portfolio
 from alerts import alert_trending_token, alert_paper_trade_opened, alert_startup, alert_daily_summary
 from goplus import check_token_security, format_security_report
 from config import get_strategy, get_strategy_name, is_kill_switch_active
-
+from pump_monitor import scan_pump_fun
 init(autoreset=True)
 
 CHECK_INTERVAL_SECONDS = 60
@@ -403,6 +403,7 @@ def check_open_positions():
 
 def run_scan():
     scan_tokens()
+    scan_pump_fun()
     scan_trending()
     check_open_positions()
     print_log_summary()

@@ -1704,5 +1704,124 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/hku2cmmgywskauwj1z9laagztrbbzubktk3dgoxzpump",
     "logged_at": "2026-05-11 18:38:55 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Trolling is a full time job.",
+    "address": "9Qi5ZNHBp3qsbeGv85jC8d598ZvdC6r8CjPbkQc5pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/9qi5znhbp3qsbegv85jc8d598zvdc6r8cjpbkqc5pump",
+    "logged_at": "2026-05-11 21:14:56 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "saas replacement is downstream. agents replace each other first.",
+    "address": "Fs4w6EgrxxSLQpbrmxVhaxhpw7WNw63MqU3rvvzMpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/fs4w6egrxxslqpbrmxvhaxhpw7wnw63mqu3rvvzmpump",
+    "logged_at": "2026-05-11 21:14:58 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "3zEzXNp1rUDgYTSSRRyStJE6VimxzERFihoevsAMpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3zezxnp1rudgytssrrystje6vimxzerfihoevsampump",
+    "logged_at": "2026-05-11 21:15:00 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "the Original Troll Face was based on Japanese wrestler Inokiyou got a",
+    "address": "J2N9T4u6b7FmJAG3W3x5cxkVhqkMG8L54EmM6ejxpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/j2n9t4u6b7fmjag3w3x5cxkvhqkmg8l54emm6ejxpump",
+    "logged_at": "2026-05-11 21:15:02 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "72Faue1uM8Nv7qc6KR47AoQFL27idbaBAwsatsmcsR2Z",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/72faue1um8nv7qc6kr47aoqfl27idbabawsatsmcsr2z",
+    "logged_at": "2026-05-11 21:15:04 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "tweet plays are getting destroyed, invest in something with value \n\nthis coin will break the ceiling, 50% locked forever",
+    "address": "6qCGwh7YpQyCa4kcmHADEHj8ZaH95YrWZ3vLc94Bpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6qcgwh7ypqyca4kcmhadehj8zah95yrwz3vlc94bpump",
+    "logged_at": "2026-05-11 21:15:05 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "QUMUZLsDTtt9gJadQijbV1gGWv9V5oZBASd4Jb3Jart",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/qumuzlsdttt9gjadqijbv1ggwv9v5ozbasd4jb3jart",
+    "logged_at": "2026-05-11 21:15:07 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "troll is popping on solana",
+    "address": "ADVAviLMaZXLVjxYDHNd3VcV68EE8HUbo9FowLPbpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/advavilmazxlvjxydhnd3vcv68ee8hubo9fowlpbpump",
+    "logged_at": "2026-05-11 21:15:09 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "91jvkHAqMHACr29n8tjJhEhuGWnnyoTJpiCgS4Nypump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/91jvkhaqmhacr29n8tjjhehugwnnyotjpicgs4nypump",
+    "logged_at": "2026-05-11 21:15:11 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Sp3ndPay is a crypto purchasing platform that lets you shop from major online retailers using SOL, USDC, or other Solana tokens \u2014 paid directly from your wallet. Just paste a product link, pay, and we handle sourcing and delivery.",
+    "address": "5fLti28wB5MKXpVEv8PAGBgfQYUrN7QWU7ugGeeVpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/5flti28wb5mkxpvev8pagbgfqyurn7qwu7uggeevpump",
+    "logged_at": "2026-05-11 21:15:13 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "GOBLIN MODE",
+    "symbol": "GOBLINMODE",
+    "address": "EKatL1EDukcMwLpAEu3H6AXDnp8w6Z7R534LqWWspump",
+    "price_usd": "0.0001627",
+    "liquidity_usd": 34360.37,
+    "volume_5m": 720.59,
+    "volume_24h": 347130.95,
+    "price_change_1h": 3.2,
+    "price_change_24h": 269,
+    "risk_score": 95,
+    "dex_url": "https://dexscreener.com/solana/2ujnsa3b3cagd5hyg67ivblnmqavroujeyg1tcgyxqs9",
+    "logged_at": "2026-05-11 21:16:17 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Mamboo is the main cat Character from a viral chinese AI Slop series on Douyin.",
+    "address": "6hbLh2xiBEmdWWjtnq7ohmJ863GLS4K5FZ3ii9vUpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6hblh2xibemdwwjtnq7ohmj863gls4k5fz3ii9vupump",
+    "logged_at": "2026-05-11 21:17:36 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "4ScoC6DiMgk7CahVHgJ1oD4wtGmwxa897LLNKmYBBcth",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/4scoc6dimgk7cahvhgj1od4wtgmwxa897llnkmybbcth",
+    "logged_at": "2026-05-11 21:22:19 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "AoCpgvktRYcp5oXAcRktLtBQAoAB36ARx2zrF4aZpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/aocpgvktrycp5oxacrktltbqaoab36arx2zrf4azpump",
+    "logged_at": "2026-05-11 21:27:03 UTC"
   }
 ]
