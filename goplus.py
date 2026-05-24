@@ -94,6 +94,42 @@ def check_token_security(token_address):
         except (ValueError, TypeError):
             pass
 
+        # Check individual holder concentration
+        # If any single wallet holds more than 20% it's dangerous
+        holders = token_data.get("holders", [])
+        if holders:
+            for holder in holders[:5]:
+                try:
+                    holder_pct = float(holder.get("percent", "0")) * 100
+                    if holder_pct > 50:
+                        findings.append(f"Single wallet holds {holder_pct:.1f}% of supply - EXTREME RISK")
+                        deductions += 60
+                        break
+                    elif holder_pct > 30:
+                        findings.append(f"Single wallet holds {holder_pct:.1f}% of supply - very high risk")
+                        deductions += 35
+                        break
+                    elif holder_pct > 20:
+                        findings.append(f"Single wallet holds {holder_pct:.1f}% of supply - high risk")
+                        deductions += 20
+                        break
+                except (ValueError, TypeError):
+                    pass
+
+        # Check liquidity concentration
+        # If liquidity pool holds huge % it means very little is in circulation
+        if holders:
+            for holder in holders[:3]:
+                tag = holder.get("tag", "").lower()
+                if "raydium" in tag or "pool" in tag or "liquidity" in tag:
+                    try:
+                        pool_pct = float(holder.get("percent", "0")) * 100
+                        if pool_pct < 10:
+                            findings.append(f"Very low liquidity pool percentage ({pool_pct:.1f}%) - rug risk")
+                            deductions += 25
+                    except (ValueError, TypeError):
+                        pass
+
         # Check buy tax
         buy_tax = token_data.get("buy_tax", "0")
         try:

@@ -43,6 +43,8 @@ def get_fresh_state():
         "wins": 0,
         "losses": 0,
         "total_profit_loss": 0.0,
+        "daily_trades": 0,
+        "last_trade_date": None,
     }
 
 
@@ -60,6 +62,20 @@ def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url, ma
 
     if state["balance"] < MAX_POSITION_SIZE:
         return False, "Insufficient paper balance"
+
+    # Check daily trade limit
+    from datetime import datetime
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+    if state.get("last_trade_date") != today:
+        state["daily_trades"] = 0
+        state["last_trade_date"] = today
+
+    from config import get_strategy
+    strategy = get_strategy()
+    daily_limit = strategy.get("daily_trade_limit", 5)
+
+    if state["daily_trades"] >= daily_limit:
+        return False, f"Daily trade limit reached ({daily_limit} trades)"
 
     if not entry_price or float(entry_price) <= 0:
         return False, "Invalid entry price"
@@ -94,6 +110,8 @@ def open_paper_trade(name, symbol, address, entry_price, risk_score, dex_url, ma
     state["total_invested"] += amount_usd
     state["open_positions"].append(position)
     state["trade_count"] += 1
+    state["daily_trades"] = state.get("daily_trades", 0) + 1
+    state["last_trade_date"] = datetime.utcnow().strftime("%Y-%m-%d")
     save_trades(state)
 
     return True, position

@@ -1,7 +1,8 @@
 {
-  "balance": 800.0,
+  "balance": 826.635694537752,
   "total_invested": 200.0,
-  "open_positions": [
+  "open_positions": [],
+  "closed_positions": [
     {
       "name": "Baby Goblin",
       "symbol": "BABYGOBLIN",
@@ -21,7 +22,13 @@
       "trailing_stop_price": 0.00013544,
       "profit_levels_hit": [],
       "partial_exits": [],
-      "status": "open"
+      "status": "closed",
+      "exit_price": 6.201e-06,
+      "exit_reason": "STOP LOSS",
+      "exit_mcap": 1.8422459893048126,
+      "profit_loss_usd": -48.15775401069518,
+      "profit_loss_pct": -96.31550802139036,
+      "closed_at": "2026-05-24 15:13:17 UTC"
     },
     {
       "name": "\ud83e\udd8e",
@@ -42,7 +49,13 @@
       "trailing_stop_price": 0.00013314,
       "profit_levels_hit": [],
       "partial_exits": [],
-      "status": "open"
+      "status": "closed",
+      "exit_price": 8.951e-05,
+      "exit_reason": "STOP LOSS",
+      "exit_mcap": 23.53049421661409,
+      "profit_loss_usd": -26.46950578338591,
+      "profit_loss_pct": -52.93901156677182,
+      "closed_at": "2026-05-24 15:13:17 UTC"
     },
     {
       "name": "TrollAss",
@@ -63,7 +76,13 @@
       "trailing_stop_price": 0.00014945,
       "profit_levels_hit": [],
       "partial_exits": [],
-      "status": "open"
+      "status": "closed",
+      "exit_price": 2.355e-06,
+      "exit_reason": "STOP LOSS",
+      "exit_mcap": 0.5515222482435597,
+      "profit_loss_usd": -49.44847775175644,
+      "profit_loss_pct": -98.89695550351288,
+      "closed_at": "2026-05-24 15:13:17 UTC"
     },
     {
       "name": "GOBLIN MODE",
@@ -84,12 +103,17 @@
       "trailing_stop_price": 0.00011389,
       "profit_levels_hit": [],
       "partial_exits": [],
-      "status": "open"
+      "status": "closed",
+      "exit_price": 2.315e-06,
+      "exit_reason": "STOP LOSS",
+      "exit_mcap": 0.7114320835894283,
+      "profit_loss_usd": -49.28856791641057,
+      "profit_loss_pct": -98.57713583282114,
+      "closed_at": "2026-05-24 15:13:17 UTC"
     }
   ],
-  "closed_positions": [],
   "trade_count": 4,
   "wins": 0,
-  "losses": 0,
-  "total_profit_loss": 0.0
+  "losses": 4,
+  "total_profit_loss": -173.3643054622481
 }

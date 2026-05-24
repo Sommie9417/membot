@@ -187,6 +187,22 @@ def scan_trending():
                 if fdv < strategy.get("min_fdv", 0):
                     continue
 
+                # Momentum check - price must be up in last 5 minutes
+                price_change_5m = pair.get("priceChange", {}).get("m5", 0) or 0
+                if price_change_5m < 0:
+                    continue
+
+                # Buy ratio check - minimum 65% buys in last hour
+                txns = pair.get("txns", {})
+                buys_h1 = txns.get("h1", {}).get("buys", 0) or 0
+                sells_h1 = txns.get("h1", {}).get("sells", 0) or 0
+                total_txns = buys_h1 + sells_h1
+                if total_txns > 0:
+                    buy_ratio = buys_h1 / total_txns
+                    min_buy_ratio = strategy.get("min_buy_ratio", 0.65)
+                    if buy_ratio < min_buy_ratio:
+                        continue
+
                 # Liquidity filter
                 if liquidity > 500_000:
                     continue
