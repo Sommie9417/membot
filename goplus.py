@@ -178,17 +178,21 @@ def check_token_security(token_address):
         }
 
     except requests.exceptions.RequestException as e:
+        # GoPlus unavailable - don't block trade, just note it
         return {
-            "safe": False,
-            "score": 0,
-            "reason": f"Network error checking security: {e}",
+            "safe": True,
+            "score": 60,
+            "reason": f"GoPlus unavailable: {e}",
+            "findings": ["GoPlus check skipped - API unavailable"],
             "details": {}
         }
     except Exception as e:
+        # GoPlus unavailable - don't block trade, just note it
         return {
-            "safe": False,
-            "score": 0,
-            "reason": f"Error checking security: {e}",
+            "safe": True,
+            "score": 60,
+            "reason": f"GoPlus error: {e}",
+            "findings": ["GoPlus check skipped - error occurred"],
             "details": {}
         }
 

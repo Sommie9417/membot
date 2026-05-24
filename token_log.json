@@ -1927,5 +1927,180 @@
     "chain": "solana",
     "dex_url": "https://dexscreener.com/solana/ynqsavudkztvdhpa5bwcph4uxfvdgh9aqiaey28pump",
     "logged_at": "2026-05-24 15:38:02 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "Hfn47MBWUbuDsMUZ9FsEL8utTP91RsVEH9CQ1wGbpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hfn47mbwubudsmuz9fsel8uttp91rsveh9cq1wgbpump",
+    "logged_at": "2026-05-24 15:43:53 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Some cake on stake",
+    "address": "6MBs7ngXWjZNcU9L9PU2Juiib1qCq6AMq99pNxuppump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6mbs7ngxwjzncu9l9pu2juiib1qcq6amq99pnxuppump",
+    "logged_at": "2026-05-24 15:46:12 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "For the\ngood devs\n\"For the ones who quietly shipped good code, fixed the bug in the dependency, wrote the documentation no-one read, and never asked for credit.\"\n\nest. by the people who use your code",
+    "address": "n5PuFK4zoKqbjv7JjuXySeWk3wa8UqwQq2RZypGu8op",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/n5pufk4zokqbjv7jjuxysewk3wa8uqwqq2rzypgu8op",
+    "logged_at": "2026-05-24 16:10:27 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Steak",
+    "address": "7rKXLKfnmWhyE8s7GoYq1czBPPD1itAz7vd35DbXFhhy",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/7rkxlkfnmwhye8s7goyq1czbppd1itaz7vd35dbxfhhy",
+    "logged_at": "2026-05-24 16:10:31 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "WRLDX6900 ($WRLDX) \u2014 the Memecoin World Index on Solana. $WRLDX is the headline; the basket holds the world's market indices. Fees split 50/25/25 to buybacks + growth, public treasury.",
+    "address": "AdALUMeGy1saQHwWB3ccAMBDEKTD12ksTVsHeUmzpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/adalumegy1saqhwwb3ccambdektd12kstvsheumzpump",
+    "logged_at": "2026-05-24 16:10:33 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "9qqtpgDcvdSE2Uwa5xVPG5gyMGjkA3YARnLMhYhfpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/9qqtpgdcvdse2uwa5xvpg5gymgjka3yarnlmhyhfpump",
+    "logged_at": "2026-05-24 16:10:35 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "FhwUmxoiRr2EEpBwN92VoTGsseSm3NMquWw8X7o3hjhp",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/fhwumxoirr2eepbwn92votgssesm3nmquww8x7o3hjhp",
+    "logged_at": "2026-05-24 16:10:48 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "6cjBkzYqcMjSwXXPguyNKjxQiKFugVf7cCJrQnLvpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/6cjbkzyqcmjswxxpguynkjxqikfugvf7ccjrqnlvpump",
+    "logged_at": "2026-05-24 16:10:54 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "PumpFun",
+    "address": "HMrhWKwRvV6ZMGcaN8aWfSd57DcngbwkieCeT2eBKEk6",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hmrhwkwrvv6zmgcan8awfsd57dcngbwkiecet2ebkek6",
+    "logged_at": "2026-05-24 16:10:57 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "HfQK7KmKJcwqKNixnAmmuVWdPQXEt7HASQherzd8pump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hfqk7kmkjcwqknixnammuvwdpqxet7hasqherzd8pump",
+    "logged_at": "2026-05-24 16:11:04 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "The ultimate World Cup meme coin on Solana",
+    "address": "3me5RPsii3WEK4eo5HwQCH6Ujah2JFHxi2SxfJJgpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/3me5rpsii3wek4eo5hwqch6ujah2jfhxi2sxfjjgpump",
+    "logged_at": "2026-05-24 16:11:07 UTC"
+  },
+  {
+    "type": "trending_pair",
+    "name": "MoonBank",
+    "symbol": "MOON",
+    "address": "EZV9mcvFQqe4Xee7VxUzKt4dDYkUZ2Ye6N2QFuS8pump",
+    "price_usd": "0.00002902",
+    "liquidity_usd": 13883.44,
+    "volume_5m": 1304.64,
+    "volume_24h": 297782.68,
+    "price_change_1h": 52.22,
+    "price_change_24h": -64.93,
+    "risk_score": 85,
+    "dex_url": "https://dexscreener.com/solana/ceedqg5swzftphhgsn3fe5mfcv6c1u3tgoexwtzzwzx2",
+    "logged_at": "2026-05-24 16:11:55 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Most memecoin pools drain. Ours only gets deeper. | Every coin launched here routes fees \u2192 $LPBANK buyback \u2192 LP burned forever.",
+    "address": "GB4aUXa17Pq7k3gxFbyNu1V9Hk2VYiC8XQgv3AWRpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/gb4auxa17pq7k3gxfbynu1v9hk2vyic8xqgv3awrpump",
+    "logged_at": "2026-05-24 16:13:13 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "HTHRnxWemzgeqL3UviGuCz5S7gMUFaaNsLpcCC8cpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/hthrnxwemzgeql3uvigucz5s7gmufaanslpccc8cpump",
+    "logged_at": "2026-05-24 16:18:36 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "2zzCmPhV5h7NUmFdAgDvZDdGjFT1evbXp8emVTnHpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/2zzcmphv5h7numfdagdvzddgjft1evbxp8emvtnhpump",
+    "logged_at": "2026-05-24 16:18:38 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Unknown",
+    "address": "gUPVKLhDWztQirLhqDDUg8yypjmSLWBSXGSuDwsD5zH",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/gupvklhdwztqirlhqddug8yypjmslwbsxgsudwsd5zh",
+    "logged_at": "2026-05-24 16:24:04 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "Agentic DeFi Markets on Solana",
+    "address": "FWskR138Dh88D1YYtGGH2U8VxLhYEoC7eTkn2nncpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/fwskr138dh88d1yytggh2u8vxlhyeoc7etkn2nncpump",
+    "logged_at": "2026-05-24 16:24:09 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "viral hot dog that fell on the ground, looking sad and dejected.",
+    "address": "9ExgTi7Cynhgs8bDcs2cXcb2jYjHQZiyKA3QLrQTpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/9exgti7cynhgs8bdcs2cxcb2jyjhqziyka3qlrqtpump",
+    "logged_at": "2026-05-24 16:44:38 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "ANTHWOPIC",
+    "address": "8Awey6nT2FAEoNqN64T3ca59BCXp4zdipjFRtKpupump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/8awey6nt2faeonqn64t3ca59bcxp4zdipjfrtkpupump",
+    "logged_at": "2026-05-24 16:44:40 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "Dzqeg46fpj5XFTtUGpoDmhUAzxstdWLs2SwbFjbRpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/dzqeg46fpj5xfttugpodmhuazxstdwls2swbfjbrpump",
+    "logged_at": "2026-05-24 16:44:42 UTC"
+  },
+  {
+    "type": "new_token",
+    "name": "",
+    "address": "7qW3vcRVcKW6wHbgHMj2xWQeehGSMTaPve5iTSGZpump",
+    "chain": "solana",
+    "dex_url": "https://dexscreener.com/solana/7qw3vcrvckw6whbghmj2xwqeehgsmtapve5itsgzpump",
+    "logged_at": "2026-05-24 16:46:53 UTC"
   }
 ]
